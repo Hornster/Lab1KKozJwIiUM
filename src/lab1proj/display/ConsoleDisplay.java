@@ -13,7 +13,7 @@ public class ConsoleDisplay implements IDisplayModule
     }
 
     @Override
-    public void ShowData(float number) {
+    public void ShowData(double number) {
         System.out.print(number);
     }
 }
