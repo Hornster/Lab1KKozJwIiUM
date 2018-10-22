@@ -1,7 +1,7 @@
-package utils;
+package pl.polsl.tests.utils;
 
-import lab1proj.data.IntegralData;
-import lab1proj.utils.TrapezoidMethod;
+import pl.polsl.data.IntegralData;
+import pl.polsl.utils.TrapezoidMethod;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;

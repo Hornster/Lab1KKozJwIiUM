@@ -1,4 +1,4 @@
-package lab1proj.display;
+package pl.polsl.display;
 
 public class ConsoleDisplay implements IDisplayModule
 {

@@ -1,11 +1,10 @@
-package utils;
+package pl.polsl.tests.utils;
 
-import lab1proj.data.IntegralData;
-import lab1proj.utils.SquareMethod;
+import pl.polsl.data.IntegralData;
+import pl.polsl.utils.SquareMethod;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import sun.misc.ASCIICaseInsensitiveComparator;
 
 public class SquareMethodTest {
     IntegralData integralData;

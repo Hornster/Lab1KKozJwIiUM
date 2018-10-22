@@ -1,11 +1,14 @@
-package lab1proj.utils;
+package pl.polsl.utils;
 
 import com.sun.istack.internal.NotNull;
-import lab1proj.data.IntegralData;
-/**Used to calculate the value of given integral in certain range. Trapezoidal method.*/
+import pl.polsl.data.IntegralData;
+/**Used to calculate the value of given integral in certain range. Trapezoidal method.
+ * @author Karol Kozuch Group 4 Section 8
+ * @version 1.0*/
 public class TrapezoidMethod implements IntegralCalculator{
     /**Amount of trapezoids used to calculate the integral value.*/
     private int precisionLevel;
+    /**Currently used integral.*/
     private IntegralData integralData;
 
     public TrapezoidMethod(@NotNull IntegralData function)
@@ -45,10 +48,10 @@ public class TrapezoidMethod implements IntegralCalculator{
         precisionLevel = precision;
     }
     /**Sets new integral for the algorithm.
-     * @param integral New integral.*/
+     * @param integralData New integral.*/
     @Override
-    public void setIntegralData(@NotNull IntegralData integral) {
-        integralData = integral;
+    public void setIntegralData(@NotNull IntegralData integralData) {
+        this.integralData = integralData;
     }
     /**Begins the calculation.
      * @return Returns the estimated value of the specified integral in its specified range.*/
@@ -60,7 +63,7 @@ public class TrapezoidMethod implements IntegralCalculator{
 
         do
         {
-            overallResult += calcTrapezoid(currentPos, interval);
+            overallResult += Math.abs(calcTrapezoid(currentPos, interval));
             currentPos += interval;
 
         }while (currentPos <= integralData.getEnd());

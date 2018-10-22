@@ -1,28 +1,34 @@
-package lab1proj;
+package pl.polsl;
 
 import com.sun.istack.internal.NotNull;
-import lab1proj.data.IntegralData;
-import lab1proj.display.*;
-import lab1proj.input.ConsoleInput;
-import lab1proj.input.IInputModule;
-import lab1proj.utils.*;
+import pl.polsl.data.IntegralData;
+import pl.polsl.display.*;
+import pl.polsl.input.ConsoleInput;
+import pl.polsl.input.IInputModule;
+import pl.polsl.utils.*;
 
-/**Contains entrance point, as well as the core methods for the program.*/
+/**Contains entrance point, as well as the core methods for the program.
+ * @author Karol Kozuch Group 4 Section 8
+ * @version 1.0*/
+
 public class Main {
-    char lastMethodDecision = '\0';
+    /**The last decision (about used integral calc. method) made by the user*/
+    private char lastMethodDecision = '\0';
     /**States of the program.*/
-    enum programStates{EXIT, WORKING}
-    programStates state;
+    private enum programStates{EXIT, WORKING}
+    /**Stores current state of the program.*/
+    private programStates state;
     /**Placeholder for the Main object.*/
-    static Main main;
+    private static Main core;
     /**The integral to calculate.*/
-    IntegralData integral;
+    private IntegralData integral;
     /**The display  module which will be used to show the results/questions/data to user.*/
-    IDisplayModule display;
+    private IDisplayModule display;
     /**The input module that allows the user to interact with the program.*/
-    IInputModule input;
-    /**Field for the calculation method (check @lab1proj.utils)*/
-    IntegralCalculator calculator;
+    private IInputModule input;
+    /**Field for the calculation method (check @pl.polsl.pl.polsl.tests.utils)*/
+    private IntegralCalculator calculator;
+    /**Ctor that initializes I/O modules and integral data (integral data for now - this will be changed in exercise 2).*/
     public Main()
     {
         display = new ConsoleDisplay();
@@ -33,15 +39,15 @@ public class Main {
     /**Entrance point for the program.
      * @param args No args are taken in.*/
     public static void main(String[] args) {
-        Main.main = new Main();
-        main.mainLoop();
+        Main.core = new Main();
+        core.mainLoop();
     }
     /**Shows a welcoming message to the user.*/
     private void printWelcome()
     {
         display.ShowData("Hllo there! \n\n\n");
     }
-    /**Pops up a message when user inputs wrong accuracy (negative number, for example).*/
+    /**Pops up a warning message when user inputs wrong accuracy (negative number, for example).*/
     private void shoutWrongAccuracy()
     {
         display.ShowData("Unfortunately, you failed miserably. Accuracy must be higher " +

@@ -1,6 +1,8 @@
-package lab1proj.utils;
+package pl.polsl.utils;
 
-/**Class for parse checks of string to numbers.*/
+/**Class for parse checks of string to numbers.
+ * @author Karol Kozuch Group 4 Section 8
+ * @version 1.0*/
 public class StringToNumber {
     /**Tries to parse the passed string to integer value.
      * @param str The string that will be tested.
