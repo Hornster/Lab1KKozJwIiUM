@@ -6,6 +6,7 @@ import lab1proj.display.*;
 import lab1proj.input.ConsoleInput;
 import lab1proj.input.IInputModule;
 import lab1proj.utils.*;
+
 /**Contains entrance point, as well as the core methods for the program.*/
 public class Main {
     char lastMethodDecision = '\0';
@@ -31,10 +32,11 @@ public class Main {
     }
     /**Entrance point for the program.
      * @param args No args are taken in.*/
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) {
         Main.main = new Main();
         main.mainLoop();
     }
+    /**Shows a welcoming message to the user.*/
     private void printWelcome()
     {
         display.ShowData("Hllo there! \n\n\n");
@@ -50,12 +52,20 @@ public class Main {
     private void askUsrForAccuracy(@NotNull IntegralCalculator calculator)
     {
         boolean correctInput = false;
-        int desiredAccuracy;
+        String rawAccuracy; //Accuracy that just have been read from the command line.
+        int desiredAccuracy = 1;
 
         display.ShowData("Specify accuracy: \n");
 
         do {
-            desiredAccuracy = input.getNumber();
+            rawAccuracy = input.getLine();
+            if(!StringToNumber.TryStringToInt(rawAccuracy)) {   //Test if the string has a number in it...
+                shoutWrongAccuracy();//...if not - report that to user and wait another input try.
+                continue;
+            }
+
+            desiredAccuracy = Integer.parseInt(rawAccuracy);
+
             if(desiredAccuracy > 0)
                 correctInput = true;
             else
@@ -93,8 +103,30 @@ public class Main {
         display.ShowData(result);
         display.ShowData("\n");
     }
+    /**Changes state of the program.
+     * @param newState The new state of the program.*/
+    private void changeState(programStates newState)
+    {
+        state= newState;
+    }
+    /**Asks user if they still want to work with the program.*/
+    private void askUsrForContinue()
+    {
+        display.ShowData("Continue (y if yes, anything otherwise)?");
+
+        String answer = input.getLine();
+        answer.toLowerCase();
+
+        if(answer.charAt(0)== 'y') {
+            changeState(programStates.WORKING);
+        }
+        else {
+            changeState(programStates.EXIT);
+        }
+    }
     /**Responsible for selecting method of calculating the integral.
-     * @param methodCode Char code of the method. 't' stands for Trapezoidal, 's' for Square method.*/
+     * @param methodCode Char code of the method. 't' stands for Trapezoidal, 's' for Square method.
+     * @return TRUE if the method has been set. FALSE otherwise.*/
     private boolean selectMethod(char methodCode)
     {
         if(lastMethodDecision == methodCode)
@@ -126,7 +158,7 @@ public class Main {
 
             triggerCalculations();
 
-            state = programStates.EXIT;
+            askUsrForContinue();
         }
     }
 }
