@@ -6,11 +6,11 @@ public interface IDisplayModule
 {
     /**Shows the message to the user.
      * @param msg A String to show.*/
-    void ShowData(String msg);
+    void showData(String msg);
     /**Shows a number to the user.
      * @param number An integer to show. */
-    void ShowData(int number);
+    void showData(int number);
     /**Shows a double precision floating point to the user.
      * @param number A double to show. */
-    void ShowData(double number);
+    void showData(double number);
 }

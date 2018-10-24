@@ -34,20 +34,4 @@ public class IntegralData {
     {
         return this.end;
     }
-
-    /**Sets the beginning of the integral range.
-     * @param beginValue New value of the beginning of the range.
-     */
-    public void setBeginning(double beginValue)
-    {
-        begin = beginValue;
-    }
-    /**Sets the end of the integral range.
-     * @param endValue New value of the end of the range.
-     */
-    public void setEnd(double endValue)
-    {
-        end = endValue;
-    }
-
 }

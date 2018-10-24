@@ -29,7 +29,7 @@ public class Main {
     /**Field for the calculation method (check @pl.polsl.pl.polsl.tests.utils)*/
     private IntegralCalculator calculator;
     /**Ctor that initializes I/O modules and integral data (integral data for now - this will be changed in exercise 2).*/
-    public Main()
+    private Main()
     {
         display = new ConsoleDisplay();
         input = new ConsoleInput();
@@ -45,12 +45,12 @@ public class Main {
     /**Shows a welcoming message to the user.*/
     private void printWelcome()
     {
-        display.ShowData("Hllo there! \n\n\n");
+        display.showData("Hllo there! \n\n\n");
     }
     /**Pops up a warning message when user inputs wrong accuracy (negative number, for example).*/
     private void shoutWrongAccuracy()
     {
-        display.ShowData("Unfortunately, you failed miserably. Accuracy must be higher " +
+        display.showData("Unfortunately, you failed miserably. Accuracy must be higher " +
                 "than 0 and be an integer type number! Try again: ");
     }
     /**Retrieves from the user info about desired accuracy of calculations.
@@ -61,11 +61,11 @@ public class Main {
         String rawAccuracy; //Accuracy that just have been read from the command line.
         int desiredAccuracy = 1;
 
-        display.ShowData("Specify accuracy: \n");
+        display.showData("Specify accuracy: \n");
 
         do {
             rawAccuracy = input.getLine();
-            if(!StringToNumber.TryStringToInt(rawAccuracy)) {   //Test if the string has a number in it...
+            if(!StringToNumber.tryStringToInt(rawAccuracy)) {   //Test if the string has a number in it...
                 shoutWrongAccuracy();//...if not - report that to user and wait another input try.
                 continue;
             }
@@ -87,12 +87,12 @@ public class Main {
         String inputData;
 
         do {
-            display.ShowData("What method to use (t for trapezoidal, s for square): \n");
+            display.showData("What method to use (t for trapezoidal, s for square): \n");
             inputData = input.getLine();
 
             /*if(inputData.length() <= 0)
             {
-                display.ShowData("Input is needed. Insert t for trapezoidal, s for square method: \n");
+                display.showData("Input is needed. Insert t for trapezoidal, s for square method: \n");
                 continue;   //User failed miserably and needs to be asked for another input.
             }*/
 
@@ -105,9 +105,9 @@ public class Main {
     {
         double result = calculator.calculateIntegral();
 
-        display.ShowData("The result of calculating the integral: ");
-        display.ShowData(result);
-        display.ShowData("\n");
+        display.showData("The result of calculating the integral: ");
+        display.showData(result);
+        display.showData("\n");
     }
     /**Changes state of the program.
      * @param newState The new state of the program.*/
@@ -118,10 +118,10 @@ public class Main {
     /**Asks user if they still want to work with the program.*/
     private void askUsrForContinue()
     {
-        display.ShowData("Continue (y if yes, anything otherwise)?");
+        display.showData("Continue (y if yes, anything otherwise)?");
 
         String answer = input.getLine();
-        answer.toLowerCase();
+        answer = answer.toLowerCase();
 
         if(answer.charAt(0)== 'y') {
             changeState(programStates.WORKING);
