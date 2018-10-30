@@ -10,6 +10,7 @@ import org.junit.Test;
  * @author Karol Kozuch Group 4 Section 8
  * @version 1.0*/
 public class TrapezoidMethodTest {
+
     /**An example integral to test*/
     IntegralData integral;
     /**Tested method object.*/
@@ -24,7 +25,7 @@ public class TrapezoidMethodTest {
     /**Tests calculateIntegral method. Will be passed if the returned by the method value
      * fits in given range.*/
     @Test
-    public void calculateIntegralTest()
+    public void testCalculateIntegral()
     {
         double result= method.calculateIntegral();
         Assert.assertTrue(result < 0.9046 && result > 0.9045);

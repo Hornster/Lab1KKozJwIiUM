@@ -24,7 +24,7 @@ public class SquareMethodTest {
     /**Tests calculateIntegral method. Will be passed if the returned by the method value
      * fits in given range.*/
     @Test
-    public void calculateIntegralTest()
+    public void testCalculateIntegral()
     {
         double result = squareMethod.calculateIntegral();
 
