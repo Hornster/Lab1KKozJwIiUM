@@ -1,21 +1,18 @@
 package pl.polsl.utils;
 
-import org.mariuszgromada.math.mxparser.Expression;
+import org.mariuszgromada.math.mxparser.Function;
 
-/**Class responsible for checking if data is correct.*/
+/**Class responsible for checking if data is correct.
+ * @author Karol Kozuch Group 4 Section 8
+ * @version 1.0*/
 public class DataChk {
     /**Validates the syntax of passed function.
      * @param functionSyntax Function to validate.
      * @return True if syntax is valid. False otherwise.*/
     public static boolean validateFunctionSyntax(String functionSyntax)
     {
-        Expression expression = new Expression (functionSyntax);
+        Function mathFunc = new Function (functionSyntax);
 
-        if(!expression.checkSyntax()) {
-            return false;
-        }
-        else{
-            return true;
-        }
+        return mathFunc.checkSyntax();
     }
 }

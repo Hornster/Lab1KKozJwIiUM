@@ -10,7 +10,22 @@ public class StringToNumber {
     public static boolean tryStringToInt(String str)
     {
         try {
-            int number = Integer.parseInt(str);
+            Integer.parseInt(str);
+        }
+        catch(NumberFormatException ex)
+        {
+            return false;
+        }
+
+        return true;
+    }
+    /**Tries to parse the passed string to double value.
+     * @param str The string that will be parsed.
+     * @return TRUE if it is possible to parse the string to double, FALSE otherwise.*/
+    public static boolean tryStringToDouble(String str)
+    {
+        try {
+            Double.parseDouble(str);
         }
         catch(NumberFormatException ex)
         {

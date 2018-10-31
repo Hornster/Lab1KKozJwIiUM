@@ -1,5 +1,6 @@
 package pl.polsl;
 
+import javafx.util.Pair;
 import pl.polsl.data.IntegralData;
 import pl.polsl.display.*;
 import pl.polsl.exceptions.NoFunctionAssignedException;
@@ -13,7 +14,7 @@ import pl.polsl.utils.*;
  * @version 1.3*/
 
 public class Main {
-    AskUser askUser;
+    private AskUser askUser;
     /**The last decision (about used integral calc. method) made by the user*/
     private char lastMethodDecision = '\0';
     /**States of the program.*/
@@ -123,7 +124,14 @@ public class Main {
             changeState(Main.programStates.EXIT);
         }
     }
+    /**Manages the process of setting the range of the integral calculation.*/
+    private void setIntegralRange()
+    {
+        Pair<Double, Double> newRange = askUser.askUsrForRange();
 
+        integral.setBeginning(newRange.getKey());
+        integral.setEnd(newRange.getValue());
+    }
     /**Main loop of the program*/
     private void mainLoop()
     {
@@ -133,6 +141,7 @@ public class Main {
             methodSelection();
             calculator.setPrecision(askUser.askUsrForAccuracy());
             setFunction(askUser.askUsrForFunction());
+            setIntegralRange();
 
             triggerCalculations();
 

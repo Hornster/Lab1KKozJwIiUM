@@ -6,7 +6,7 @@ import pl.polsl.exceptions.NoFunctionAssignedException;
 
 /**Used to calculate the value of given integral in certain range. Trapezoidal method.
  * @author Karol Kozuch Group 4 Section 8
- * @version 1.2*/
+ * @version 1.3*/
 public class TrapezoidMethod implements IntegralCalculator{
     /**Amount of trapezoids used to calculate the integral value.*/
     private int precisionLevel;
@@ -26,7 +26,7 @@ public class TrapezoidMethod implements IntegralCalculator{
      * @return Returns the length of a single trapezoid along X axis.*/
     private double findInterval()
     {
-        return (integralData.getEnd()-integralData.getBeginning())/precisionLevel;
+        return (Math.abs(integralData.getEnd())+Math.abs(integralData.getBeginning()))/precisionLevel;
     }
     /**Calculates area of a single trapezoid.
      * @param currentPos The beginning X of the currently calculated trapezoid.
@@ -39,7 +39,7 @@ public class TrapezoidMethod implements IntegralCalculator{
         currentPos += interval;
         singleResult += integralData.calcValue(currentPos);
         singleResult *= interval;
-        singleResult /= (double)2;
+        singleResult /= 2.0;
 
         return singleResult;
     }
@@ -60,15 +60,15 @@ public class TrapezoidMethod implements IntegralCalculator{
     @Override
     public double calculateIntegral()throws NoFunctionAssignedException {
         double interval = findInterval();
-        double currentPos = integralData.getBeginning();
+        double currentPos = integralData.getEnd();
         double overallResult = 0.0;
 
         do
         {
-            overallResult += Math.abs(calcTrapezoid(currentPos, interval));
+            overallResult += calcTrapezoid(currentPos, interval);
             currentPos += interval;
 
-        }while (currentPos <= integralData.getEnd());
+        }while (currentPos <= integralData.getBeginning());
 
         return overallResult;
     }

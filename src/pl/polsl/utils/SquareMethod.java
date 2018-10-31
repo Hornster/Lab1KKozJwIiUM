@@ -6,12 +6,12 @@ import pl.polsl.exceptions.NoFunctionAssignedException;
 
 /**Calculates value of an integral in given range using squares method.
  * @author Karol Kozuch Group 4 Section 8
- * @version 1.2*/
+ * @version 1.3*/
 public class SquareMethod implements IntegralCalculator {
     /**The amount of squares used to approximate the value.*/
-    int precisionLevel;
+    private int precisionLevel;
     /**Currently used integral.*/
-    IntegralData usedIntegralData;
+    private IntegralData usedIntegralData;
 
     public SquareMethod(@NotNull IntegralData function){ this(function, 100);}
     public SquareMethod(@NotNull IntegralData function, int precisionLevel)
@@ -37,7 +37,7 @@ public class SquareMethod implements IntegralCalculator {
      * @return Area of the rectangle used in approximation.*/
     private double calcSingleRectangle(double currentBeginning, double interval) throws NoFunctionAssignedException
     {
-        double result = 0.0;
+        double result;
         result = usedIntegralData.calcValue(currentBeginning);
         result *= interval;
 
@@ -48,13 +48,12 @@ public class SquareMethod implements IntegralCalculator {
     @Override
     public double calculateIntegral() throws NoFunctionAssignedException {
         double overallResult = 0.0;
-        double currentPos = usedIntegralData.getBeginning();
+        double currentPos = usedIntegralData.getEnd();
         double interval = calcInterval();
 
-        while(currentPos < usedIntegralData.getEnd())
+        while(currentPos <= usedIntegralData.getBeginning())
         {
-
-            overallResult+=Math.abs(calcSingleRectangle(currentPos, interval));
+            overallResult+=calcSingleRectangle(currentPos, interval);
             currentPos += interval;
         }
 
@@ -63,7 +62,7 @@ public class SquareMethod implements IntegralCalculator {
     /**Calculates the width of a single rectangle basing on the @precisionLevel and @usedIntegralData beginning and end values.
      * @return Returns the width of a single rectangle (on X axis).*/
     private double calcInterval() {
-        return (usedIntegralData.getEnd()- usedIntegralData.getBeginning())/precisionLevel;
+        return (Math.abs(usedIntegralData.getEnd())+ Math.abs(usedIntegralData.getBeginning()))/precisionLevel;
 
     }
 }
