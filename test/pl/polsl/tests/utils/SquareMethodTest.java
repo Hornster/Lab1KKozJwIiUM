@@ -1,10 +1,14 @@
 package pl.polsl.tests.utils;
 
+import org.mariuszgromada.math.mxparser.Expression;
 import pl.polsl.data.IntegralData;
+import pl.polsl.exceptions.NoFunctionAssignedException;
 import pl.polsl.utils.SquareMethod;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+
+import static junit.framework.TestCase.fail;
 
 /**Contains tests for the {@link pl.polsl.utils.SquareMethod} class.
  * @author Karol Kozuch Group 4 Section 8
@@ -19,6 +23,7 @@ public class SquareMethodTest {
     public void iniTests()
     {
         integralData = new IntegralData(0, 0.8);
+        integralData.setIntegralFunc("x^3+x^2");
         squareMethod = new SquareMethod(integralData, 100000);
     }
     /**Tests calculateIntegral method. Will be passed if the returned by the method value
@@ -26,8 +31,14 @@ public class SquareMethodTest {
     @Test
     public void testCalculateIntegral()
     {
-        double result = squareMethod.calculateIntegral();
+        try {
+            double result = squareMethod.calculateIntegral();
 
-        Assert.assertTrue(result < 0.9046 && result > 0.9045);
+            Assert.assertEquals("Calculatin integral of x^3 + x^2: ", 0.273, result, 0.02);
+        }
+        catch(NoFunctionAssignedException ex)
+        {
+            fail("Test failed: " + ex.getMessage());
+        }
     }
 }

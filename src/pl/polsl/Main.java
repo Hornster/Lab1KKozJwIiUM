@@ -1,17 +1,19 @@
 package pl.polsl;
 
-import com.sun.istack.internal.NotNull;
 import pl.polsl.data.IntegralData;
 import pl.polsl.display.*;
+import pl.polsl.exceptions.NoFunctionAssignedException;
 import pl.polsl.input.ConsoleInput;
 import pl.polsl.input.IInputModule;
+import pl.polsl.output.AskUser;
 import pl.polsl.utils.*;
 
 /**Contains entrance point, as well as the core methods for the program.
  * @author Karol Kozuch Group 4 Section 8
- * @version 1.0*/
+ * @version 1.3*/
 
 public class Main {
+    AskUser askUser;
     /**The last decision (about used integral calc. method) made by the user*/
     private char lastMethodDecision = '\0';
     /**States of the program.*/
@@ -35,6 +37,7 @@ public class Main {
         input = new ConsoleInput();
         state = programStates.WORKING;
         integral = new IntegralData(0, 1.8);
+        askUser = new AskUser(display, input);
     }
     /**Entrance point for the program.
      * @param args No args are taken in.*/
@@ -42,72 +45,30 @@ public class Main {
         Main.core = new Main();
         core.mainLoop();
     }
-    /**Shows a welcoming message to the user.*/
-    private void printWelcome()
+
+
+
+    /**Assigns input function to integral.
+     * @param functionSyntax Syntax of newly input function.*/
+    private void setFunction(String functionSyntax)
     {
-        display.showData("Hllo there! \n\n\n");
+        integral.setIntegralFunc(functionSyntax);
     }
-    /**Pops up a warning message when user inputs wrong accuracy (negative number, for example).*/
-    private void shoutWrongAccuracy()
-    {
-        display.showData("Unfortunately, you failed miserably. Accuracy must be higher " +
-                "than 0 and be an integer type number! Try again: ");
-    }
-    /**Retrieves from the user info about desired accuracy of calculations.
-     * @param calculator The calculating method used for calculation, which's accuracy shall change.*/
-    private void askUsrForAccuracy(@NotNull IntegralCalculator calculator)
-    {
-        boolean correctInput = false;
-        String rawAccuracy; //Accuracy that just have been read from the command line.
-        int desiredAccuracy = 1;
 
-        display.showData("Specify accuracy: \n");
-
-        do {
-            rawAccuracy = input.getLine();
-            if(!StringToNumber.tryStringToInt(rawAccuracy)) {   //Test if the string has a number in it...
-                shoutWrongAccuracy();//...if not - report that to user and wait another input try.
-                continue;
-            }
-
-            desiredAccuracy = Integer.parseInt(rawAccuracy);
-
-            if(desiredAccuracy > 0)
-                correctInput = true;
-            else
-                shoutWrongAccuracy();
-        }
-        while(!correctInput);
-
-        calculator.setPrecision(desiredAccuracy);
-    }
-    /**Retrieves from the user information about which method shall be used for calculations.*/
-    private void askUsrForMethod()
-    {
-        String inputData;
-
-        do {
-            display.showData("What method to use (t for trapezoidal, s for square): \n");
-            inputData = input.getLine();
-
-            /*if(inputData.length() <= 0)
-            {
-                display.showData("Input is needed. Insert t for trapezoidal, s for square method: \n");
-                continue;   //User failed miserably and needs to be asked for another input.
-            }*/
-
-            inputData = inputData.toLowerCase();
-        }while(!selectMethod(inputData.charAt(0)));
-
-    }
     /**Enables the process of calculating the integral value.*/
     private void triggerCalculations()
     {
-        double result = calculator.calculateIntegral();
+        try {
+            double result = calculator.calculateIntegral();
 
-        display.showData("The result of calculating the integral: ");
-        display.showData(result);
-        display.showData("\n");
+            display.showData("The result of calculating the integral: ");
+            display.showData(result);
+            display.showData("\n");
+        }
+        catch(NoFunctionAssignedException ex)
+        {
+            display.showData(ex.getMessage());
+        }
     }
     /**Changes state of the program.
      * @param newState The new state of the program.*/
@@ -115,26 +76,13 @@ public class Main {
     {
         state= newState;
     }
-    /**Asks user if they still want to work with the program.*/
-    private void askUsrForContinue()
-    {
-        display.showData("Continue (y if yes, anything otherwise)?");
 
-        String answer = input.getLine();
-        answer = answer.toLowerCase();
-
-        if(answer.charAt(0)== 'y') {
-            changeState(programStates.WORKING);
-        }
-        else {
-            changeState(programStates.EXIT);
-        }
-    }
     /**Responsible for selecting method of calculating the integral.
      * @param methodCode Char code of the method. 't' stands for Trapezoidal, 's' for Square method.
      * @return TRUE if the method has been set. FALSE otherwise.*/
     private boolean selectMethod(char methodCode)
     {
+
         if(lastMethodDecision == methodCode)
             return true; //No need to change algorithm since user selected the previously chosen.
         switch (methodCode)
@@ -153,18 +101,42 @@ public class Main {
 
 
     }
+    /**Manages selection of the calculation method process.*/
+    private void methodSelection()
+    {
+        char selection;
+        do {
+            selection = askUser.askUsrForMethod();
+        }while(!selectMethod(selection));
+    }
+    /**Manages asking the user if they still want to perform calculations or quit.*/
+    private void chkContinuation()
+    {
+        char decision = askUser.askUsrForContinue();
+
+        decision = Character.toLowerCase(decision);
+
+        if(decision == 'y') {
+            changeState(Main.programStates.WORKING);
+        }
+        else {
+            changeState(Main.programStates.EXIT);
+        }
+    }
+
     /**Main loop of the program*/
     private void mainLoop()
     {
-        printWelcome();
+        askUser.printWelcome();
         while(state != programStates.EXIT)
         {
-            askUsrForMethod();
-            askUsrForAccuracy(calculator);
+            methodSelection();
+            calculator.setPrecision(askUser.askUsrForAccuracy());
+            setFunction(askUser.askUsrForFunction());
 
             triggerCalculations();
 
-            askUsrForContinue();
+            chkContinuation();
         }
     }
 }

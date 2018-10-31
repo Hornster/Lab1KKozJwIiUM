@@ -2,6 +2,8 @@ package pl.polsl.utils;
 
 
 import pl.polsl.data.IntegralData;
+import pl.polsl.exceptions.NoFunctionAssignedException;
+
 /**Interface for integral calculating methods.
  * @author Karol Kozuch Group 4 Section 8
  * @version 1.0*/
@@ -16,5 +18,5 @@ public interface IntegralCalculator {
 
     /**Calculates the integral value.
      * @return Calculated integral value.*/
-    double calculateIntegral();
+    double calculateIntegral() throws NoFunctionAssignedException;
 }

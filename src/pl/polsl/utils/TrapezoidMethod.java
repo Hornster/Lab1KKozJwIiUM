@@ -2,9 +2,11 @@ package pl.polsl.utils;
 
 import com.sun.istack.internal.NotNull;
 import pl.polsl.data.IntegralData;
+import pl.polsl.exceptions.NoFunctionAssignedException;
+
 /**Used to calculate the value of given integral in certain range. Trapezoidal method.
  * @author Karol Kozuch Group 4 Section 8
- * @version 1.0*/
+ * @version 1.2*/
 public class TrapezoidMethod implements IntegralCalculator{
     /**Amount of trapezoids used to calculate the integral value.*/
     private int precisionLevel;
@@ -30,7 +32,7 @@ public class TrapezoidMethod implements IntegralCalculator{
      * @param currentPos The beginning X of the currently calculated trapezoid.
      * @param interval The height (on X axis) of the trapezoid.
      * @return Area of a trapezoid.*/
-    private double calcTrapezoid(double currentPos, double interval)
+    private double calcTrapezoid(double currentPos, double interval)throws NoFunctionAssignedException
     {
         double singleResult = 0.0;
         singleResult += integralData.calcValue(currentPos);
@@ -56,7 +58,7 @@ public class TrapezoidMethod implements IntegralCalculator{
     /**Begins the calculation.
      * @return Returns the estimated value of the specified integral in its specified range.*/
     @Override
-    public double calculateIntegral() {
+    public double calculateIntegral()throws NoFunctionAssignedException {
         double interval = findInterval();
         double currentPos = integralData.getBeginning();
         double overallResult = 0.0;
