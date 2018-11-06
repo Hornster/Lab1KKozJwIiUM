@@ -1,5 +1,7 @@
 package pl.polsl.data;
 
+import pl.polsl.exceptions.NoQueryFoundException;
+
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -24,25 +26,25 @@ public class QueryHistory implements Iterable{
     /**Returns a copy of single query. If none available - returns null.
      * @param index Index of requested query.
      * @return Requested query or null, if none found under given index.*/
-    public SingleQuery getQuery(int index)
+    public SingleQuery getQuery(int index) throws NoQueryFoundException
     {
-        if(queries.size() > index) {
+        if(queries.size() > index && index >= 0) {
             return new SingleQuery(queries.get(index));
         }
         else
         {
-            return null;
+            throw new NoQueryFoundException("Tried to access non-existing query under " + index + " index! ");
         }
     }
     /**Returns a copy of last query inserted into collection.
      * @return Last query or null, if no queries available.*/
-    public SingleQuery getQuery()
+    public SingleQuery getQuery() throws NoQueryFoundException
     {
         if(queries.size() > 0) {
             return new SingleQuery(queries.get(queries.size() - 1));
         }
         else {
-            return null;
+            throw new NoQueryFoundException("Tried to access non-existing query - the collection is empty!");
         }
     }
     /**An iterator used in foreach loop.

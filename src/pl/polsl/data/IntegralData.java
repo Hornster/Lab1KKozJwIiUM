@@ -103,4 +103,18 @@ public class IntegralData {
     {
         end = newValue;
     }
+    /**Gets the argument of the integral, usable only around the package.
+     * @return Argument used in the integral.*/
+    char getArgument()
+    {
+        return argument;
+    }
+    /**Gets the ,ath function that describes the integral.
+     * @return Mathematical function in form of a String.*/
+    String getFunction()
+    {
+        return integralFunc.getFunctionExpressionString();
+    }
+
+
 }
