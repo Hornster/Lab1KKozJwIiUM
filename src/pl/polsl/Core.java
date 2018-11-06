@@ -103,7 +103,7 @@ class Core {
         }
     }
     /**Creates instance of the core, then calls the main loop of the program.*/
-    public static void start()
+    static void start()
     {
         if (core == null) {
             core = new Core();
@@ -112,7 +112,3 @@ class Core {
         core.mainLoop();
     }
 }
-
-//TODO
-//Create something like CalculationData class and move methods and fields responsible
-//for setting integral and calculation data (like the argument, integralData, etc.) to the class.
