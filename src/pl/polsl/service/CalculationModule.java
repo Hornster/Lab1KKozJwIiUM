@@ -15,7 +15,7 @@ import java.util.List;
  */
 public class CalculationModule {
     /**List of listeners that observe this module.*/
-    List<CalcResultListener> observers = new LinkedList<>();
+    private List<CalcResultListener> observers = new LinkedList<>();
     /**The last decision (about used integral calc. method) made by the user*/
     private char lastMethodDecision = '\0';
     /**The integral to calculate.*/
@@ -97,7 +97,7 @@ public class CalculationModule {
      * Assigns new range to the integral.
      * @param newRange Pair of doubles defining new range. First is beginning, second - end.
      */
-    public void AssignNewIntegralRange(Pair<Double, Double> newRange)
+    public void assignNewIntegralRange(Pair<Double, Double> newRange)
     {
         integral.setBeginning(newRange.getKey());
         integral.setEnd(newRange.getValue());

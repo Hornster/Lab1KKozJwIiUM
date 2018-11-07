@@ -13,7 +13,7 @@ import pl.polsl.exceptions.NoFunctionAssignedException;
  * -argument (by default - 'x')
  * -integral function.
  * @author Karol Kozuch Group 4 Section 8
- * @version 1.3*/
+ * @version 1.3.2*/
 public class IntegralData {
     /**The expression used in calculations.*/
     private Expression exp1;
@@ -29,7 +29,7 @@ public class IntegralData {
      * Called upon any call to getter of one of the two.*/
     private void TrySwapBeginWithEnd()
     {
-        if(begin < end)
+        if(begin > end)
         {
             double temp = begin;
             begin = end;
@@ -39,15 +39,15 @@ public class IntegralData {
 
     /**Calculates the value of integral in position equal to x. For now, the integral is sewn into the code.
      * @throws NoFunctionAssignedException - when the integral function was not set before calculations.
-     * @param x The x for which the integral value shall be calculated.
-     * @return The y (value) of the integral in x.*/
-    public double calcValue(double x) throws NoFunctionAssignedException
+     * @param argumentValue The x for which the integral value shall be calculated.
+     * @return The value of the integral in argumentValue.*/
+    public double calcValue(double argumentValue) throws NoFunctionAssignedException
     {
         if(integralFunc == null)
             throw new NoFunctionAssignedException("Call for a function that was not initialized first!");
 
-        //Expression e1 = new Expression("f(" + x + ")", integralFunc);
-        exp1.setArgumentValue("x", x);
+        //Get first argument and set its value.
+        exp1.getArgument(0).setArgumentValue(argumentValue);
         return exp1.calculate();
     }
     /**A definite integral has to have a range.
@@ -74,7 +74,7 @@ public class IntegralData {
         integralFunc = new Function(newFunction);
         argument = integralFunc.getArgument(0).getArgumentName().charAt(0);
             //exp1 = new Expression("f(" + argument + ")",integralFunc);
-        exp1 = new Expression("f(" + argument + ")",integralFunc);
+        exp1 = new Expression(integralFunc.getFunctionName() + "(" + argument + ")",integralFunc);
         exp1.addArguments(new Argument(argument.toString(), 0.0));
     }
     /**Getter for the beginning of the integral range.

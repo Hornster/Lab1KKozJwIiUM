@@ -14,7 +14,7 @@ public class SquareMethod implements IntegralCalculator {
     /**Currently used integral.*/
     private IntegralData usedIntegralData;
 
-    public SquareMethod(@NotNull IntegralData function){ this(function, 100);}
+    SquareMethod(@NotNull IntegralData function){ this(function, 100);}
     public SquareMethod(@NotNull IntegralData function, int precisionLevel)
     {
         usedIntegralData = function;
@@ -49,10 +49,10 @@ public class SquareMethod implements IntegralCalculator {
     @Override
     public double calculateIntegral() throws NoFunctionAssignedException {
         double overallResult = 0.0;
-        double currentPos = usedIntegralData.getEnd();
+        double currentPos = usedIntegralData.getBeginning();
         double interval = calcInterval();
 
-        while(currentPos <= usedIntegralData.getBeginning())
+        while(currentPos <= usedIntegralData.getEnd())
         {
             overallResult+=calcSingleRectangle(currentPos, interval);
             currentPos += interval;

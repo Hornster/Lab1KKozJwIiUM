@@ -11,8 +11,11 @@ import pl.polsl.utils.StringToNumber;
  * @version 1.0*/
 
 public class AskUser {
+    /**Reference to the module that displays stuff to the user.*/
     private IDisplayModule display;
+    /**Reference to the module that grabs the input from the user.*/
     private IInputModule input;
+
 
     public AskUser(IDisplayModule displayModule, IInputModule inputModule)
     {
@@ -35,6 +38,25 @@ public class AskUser {
     private void shoutWrongRange()
     {
         display.showData("Unfortunately, you failed critically. Range must be a real number!");
+    }
+
+    /**
+     * Ask the user for decision about what shall the program do.
+     * @return Integer in form of a string (assured).
+     */
+    public int selectActionFromMenu()
+    {
+        String data;
+        do {
+            display.showData("Please select action: \n");
+            display.showData("[0]Calculate integral \n");
+            display.showData("[1]Show all queries made during this session \n");
+            display.showData("[2]Exit \n");
+
+            data = input.getLine();
+        }while(!StringToNumber.tryStringToInt(data));
+
+        return Integer.parseInt(data);
     }
 
     /**Retrieves from the user info about desired accuracy of calculations.

@@ -11,7 +11,7 @@ import java.util.Map;
  * by the user during runtime.
  *
  * @author Karol KozuchGroup 4 Section 8
- * @version 1.1*/
+ * @version 1.1.1*/
 public class QueryHistory implements Iterable {
     /**Amount of mementos in this collection.*/
     private static int itemsCount=0;
@@ -55,6 +55,14 @@ public class QueryHistory implements Iterable {
         return new QueryHistoryIterator();
     }
 
+    /**
+     * Gets the size of the history.
+     * @return Amount of SingleQueries in the collection.
+     */
+    public int size()
+    {
+        return queries.size();
+    }
 
     /**Iterator for QueryHistory. Allows iteration through the queries collection.
      * @author Karol Kozuch
@@ -69,17 +77,14 @@ public class QueryHistory implements Iterable {
          * @return Returns true if there's next item in the collection. False otherwise.*/
         @Override
         public boolean hasNext() {
-            return i < queries.size();
+            return i+1 < queries.size();
         }
         /**Moves iterator to next element in the collection.
          * @return Next element in the collection.*/
         @Override
         public SingleQuery next() {
             i++;
-            if(hasNext())
-            {
-                current = queries.get(i);
-            }
+            current = queries.get(i);
 
             return current;
         }

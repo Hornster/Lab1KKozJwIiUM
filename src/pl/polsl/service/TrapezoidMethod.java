@@ -14,7 +14,7 @@ public class TrapezoidMethod implements IntegralCalculator {
     /**Currently used integral.*/
     private IntegralData integralData;
 
-    public TrapezoidMethod(@NotNull IntegralData function)
+    TrapezoidMethod(@NotNull IntegralData function)
     {
         this(function, 100);
     }
@@ -61,7 +61,7 @@ public class TrapezoidMethod implements IntegralCalculator {
     @Override
     public double calculateIntegral()throws NoFunctionAssignedException {
         double interval = findInterval();
-        double currentPos = integralData.getEnd();
+        double currentPos = integralData.getBeginning();
         double overallResult = 0.0;
 
         do
@@ -69,7 +69,7 @@ public class TrapezoidMethod implements IntegralCalculator {
             overallResult += calcTrapezoid(currentPos, interval);
             currentPos += interval;
 
-        }while (currentPos <= integralData.getBeginning());
+        }while (currentPos <= integralData.getEnd());
 
         return overallResult;
     }
