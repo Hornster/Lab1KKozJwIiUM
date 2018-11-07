@@ -69,14 +69,7 @@ public class QueryHistory implements Iterable {
          * @return Returns true if there's next item in the collection. False otherwise.*/
         @Override
         public boolean hasNext() {
-            if(i < queries.size())
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            return i < queries.size();
         }
         /**Moves iterator to next element in the collection.
          * @return Next element in the collection.*/

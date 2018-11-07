@@ -5,7 +5,7 @@ import pl.polsl.data.IntegralData;
 
 /**Classes that want to react to new calculation need to implement this interface.
   * @author Karol KozuchGroup 4 Section 8
-  * @version 1.1*/
+  * @version 1.0*/
 public interface CalcResultListener {
     /**
      * Will be called by observed object.
