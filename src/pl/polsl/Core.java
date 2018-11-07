@@ -1,18 +1,22 @@
 package pl.polsl;
 
-import javafx.util.Pair;
+import pl.polsl.data.QueryHistory;
 import pl.polsl.display.ConsoleDisplay;
 import pl.polsl.display.IDisplayModule;
 import pl.polsl.exceptions.NoFunctionAssignedException;
 import pl.polsl.input.ConsoleInput;
 import pl.polsl.input.IInputModule;
-import pl.polsl.output.AskUser;
+import pl.polsl.userPrompt.AskUser;
 import pl.polsl.service.CalculationModule;
+import pl.polsl.utils.QueryManager;
 
 /**Contains the core methods for the program.
  * @author Karol Kozuch Group 4 Section 8
  * @version 1.0*/
 class Core {
+    /**Stores information about already processed approximation queries.*/
+    private QueryManager queryManager;
+    /**Responsible for sending messages to the user.*/
     private AskUser askUser;
     /**Manages calculation performing and data assigning (needed for the calculations).*/
     private CalculationModule calculationModule;
@@ -36,6 +40,9 @@ class Core {
         state = programStates.WORKING;
         calculationModule = new CalculationModule();
         askUser = new AskUser(display, input);
+        queryManager = new QueryManager();
+
+        calculationModule.addListener(queryManager);
     }
     /**Enables the process of calculating the integral value.*/
     private void triggerCalculations()

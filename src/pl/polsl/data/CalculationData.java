@@ -12,7 +12,7 @@ public class CalculationData {
     /**The result of last approximation. Default 0.*/
     private double result = 0.0;
 
-    public int getAccuracy() {
+    int getAccuracy() {
         return accuracy;
     }
 
@@ -20,7 +20,7 @@ public class CalculationData {
         this.accuracy = accuracy;
     }
 
-    public char getCalculationMethod() {
+    char getCalculationMethod() {
         return calculationMethod;
     }
 
@@ -28,7 +28,7 @@ public class CalculationData {
         this.calculationMethod = calculationMethod;
     }
 
-    public double getResult() {
+    double getResult() {
         return result;
     }
 

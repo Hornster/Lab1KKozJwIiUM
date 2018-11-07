@@ -129,3 +129,6 @@ public class SingleQuery {
 
 
 }
+//TODO
+//Range beginning and end are swapped. Check assignment of these(right after the user
+//inputs'em).

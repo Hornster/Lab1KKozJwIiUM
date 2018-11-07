@@ -4,15 +4,18 @@ import javafx.util.Pair;
 import pl.polsl.data.CalculationData;
 import pl.polsl.data.IntegralData;
 import pl.polsl.exceptions.NoFunctionAssignedException;
-import pl.polsl.utils.IntegralCalculator;
-import pl.polsl.utils.SquareMethod;
-import pl.polsl.utils.TrapezoidMethod;
+import pl.polsl.utils.CalcResultListener;
+
+import java.util.LinkedList;
+import java.util.List;
 
 /** Manages data containers required for calculations and triggers the process itself.
  * @author Karol Kozuch Group 4 Section 8
  * @version 1.0
  */
 public class CalculationModule {
+    /**List of listeners that observe this module.*/
+    List<CalcResultListener> observers = new LinkedList<>();
     /**The last decision (about used integral calc. method) made by the user*/
     private char lastMethodDecision = '\0';
     /**The integral to calculate.*/
@@ -22,6 +25,17 @@ public class CalculationModule {
     /**Field for the calculation method.*/
     private IntegralCalculator calculator;
 
+    /**
+     * Passes to all CalcResultListeners information about recently finished approximation.
+     */
+    private void informListeners()
+    {
+        for(CalcResultListener listener: observers)
+        {
+            listener.newCalculationPerformed(calculationData, integral);
+        }
+    }
+
     /**Assigns input function to integral.
      * @param functionSyntax Syntax of newly input function.*/
     public void setFunction(String functionSyntax)
@@ -30,13 +44,25 @@ public class CalculationModule {
     }
 
     /**
+     * Adds new observer (listener) to the calculator.
+     * @param newListener Observing instance.
+     */
+    public void addListener(CalcResultListener newListener)
+    {
+        observers.add(newListener);
+    }
+    /**
      * Triggers the calculations and returns the result.
-     * @return
+     * @return Result of the approximation (value of the definite integral in given range).
      * @throws NoFunctionAssignedException Thrown when there was no function assigned or it was corrupt.
      */
     public double performCalculation() throws NoFunctionAssignedException {
+        calculator.setIntegralData(integral);
+
         double result = calculator.calculateIntegral();
         calculationData.setResult(result);
+
+        informListeners();
 
         return result;
     }
@@ -55,10 +81,12 @@ public class CalculationModule {
             case 't':
                 calculator = new TrapezoidMethod(integral);
                 lastMethodDecision = methodCode;
+                calculationData.setCalculationMethod(methodCode);
                 return true;
             case 's':
                 calculator = new SquareMethod(integral);
                 lastMethodDecision = methodCode;
+                calculationData.setCalculationMethod(methodCode);
                 return true;
             default:
                 return false;
@@ -82,5 +110,6 @@ public class CalculationModule {
     public void setAccuracy(int newAccuracy)
     {
         calculationData.setAccuracy(newAccuracy);
+        calculator.setPrecision(newAccuracy);
     }
 }

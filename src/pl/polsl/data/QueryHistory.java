@@ -1,6 +1,7 @@
 package pl.polsl.data;
 
 import pl.polsl.exceptions.NoQueryFoundException;
+import pl.polsl.utils.CalcResultListener;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -9,9 +10,9 @@ import java.util.Map;
 /**Manages collection  that stores all queries that have been made
  * by the user during runtime.
  *
- * @author Karol Kozuch
- * @version 1.0*/
-public class QueryHistory implements Iterable{
+ * @author Karol KozuchGroup 4 Section 8
+ * @version 1.1*/
+public class QueryHistory implements Iterable {
     /**Amount of mementos in this collection.*/
     private static int itemsCount=0;
     /**All queries made by the user during single runtime.*/
@@ -53,6 +54,8 @@ public class QueryHistory implements Iterable{
     public Iterator iterator() {
         return new QueryHistoryIterator();
     }
+
+
     /**Iterator for QueryHistory. Allows iteration through the queries collection.
      * @author Karol Kozuch
      * @version 1.0*/

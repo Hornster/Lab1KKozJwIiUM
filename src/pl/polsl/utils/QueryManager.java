@@ -1,5 +1,6 @@
 package pl.polsl.utils;
 
+import pl.polsl.data.CalculationData;
 import pl.polsl.data.IntegralData;
 import pl.polsl.data.QueryHistory;
 import pl.polsl.data.SingleQuery;
@@ -9,7 +10,7 @@ import pl.polsl.exceptions.NoQueryFoundException;
  * data.
  * @author Kozuch Karol
  * @version 1.0*/
-public class QueryManager {
+public class QueryManager implements CalcResultListener{
     /**Stores queries' data.*/
     private QueryHistory history = new QueryHistory();
 
@@ -34,4 +35,10 @@ public class QueryManager {
     {
         return history;
     }
+
+    @Override
+    public void newCalculationPerformed(CalculationData calculationData, IntegralData integralData) {
+        addQuery(new SingleQuery(integralData, calculationData));
+    }
+
 }

@@ -1,16 +1,15 @@
 package pl.polsl.tests.utils;
 
-import org.mariuszgromada.math.mxparser.Expression;
 import pl.polsl.data.IntegralData;
 import pl.polsl.exceptions.NoFunctionAssignedException;
-import pl.polsl.utils.SquareMethod;
+import pl.polsl.service.SquareMethod;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
 import static junit.framework.TestCase.fail;
 
-/**Contains tests for the {@link pl.polsl.utils.SquareMethod} class.
+/**Contains tests for the {@link SquareMethod} class.
  * @author Karol Kozuch Group 4 Section 8
  * @version 1.2*/
 public class SquareMethodTest {

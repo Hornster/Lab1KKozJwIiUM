@@ -1,4 +1,4 @@
-package pl.polsl.output;
+package pl.polsl.userPrompt;
 
 import javafx.util.Pair;
 import pl.polsl.display.IDisplayModule;

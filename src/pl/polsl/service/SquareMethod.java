@@ -1,8 +1,9 @@
-package pl.polsl.utils;
+package pl.polsl.service;
 
 import com.sun.istack.internal.NotNull;
 import pl.polsl.data.IntegralData;
 import pl.polsl.exceptions.NoFunctionAssignedException;
+import pl.polsl.service.IntegralCalculator;
 
 /**Calculates value of an integral in given range using squares method.
  * @author Karol Kozuch Group 4 Section 8

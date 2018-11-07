@@ -2,15 +2,14 @@ package pl.polsl.tests.utils;
 
 import pl.polsl.data.IntegralData;
 import pl.polsl.exceptions.NoFunctionAssignedException;
-import pl.polsl.utils.SquareMethod;
-import pl.polsl.utils.TrapezoidMethod;
+import pl.polsl.service.TrapezoidMethod;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
 import static junit.framework.TestCase.fail;
 
-/**Contains tests for the {@link pl.polsl.utils.TrapezoidMethod} class.
+/**Contains tests for the {@link TrapezoidMethod} class.
  * @author Karol Kozuch Group 4 Section 8
  * @version 1.2*/
 public class TrapezoidMethodTest {

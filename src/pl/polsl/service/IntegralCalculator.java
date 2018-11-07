@@ -1,4 +1,4 @@
-package pl.polsl.utils;
+package pl.polsl.service;
 
 
 import pl.polsl.data.IntegralData;

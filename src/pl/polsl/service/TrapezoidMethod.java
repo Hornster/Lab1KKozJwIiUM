@@ -1,13 +1,14 @@
-package pl.polsl.utils;
+package pl.polsl.service;
 
 import com.sun.istack.internal.NotNull;
 import pl.polsl.data.IntegralData;
 import pl.polsl.exceptions.NoFunctionAssignedException;
+import pl.polsl.service.IntegralCalculator;
 
 /**Used to calculate the value of given integral in certain range. Trapezoidal method.
  * @author Karol Kozuch Group 4 Section 8
  * @version 1.3*/
-public class TrapezoidMethod implements IntegralCalculator{
+public class TrapezoidMethod implements IntegralCalculator {
     /**Amount of trapezoids used to calculate the integral value.*/
     private int precisionLevel;
     /**Currently used integral.*/
