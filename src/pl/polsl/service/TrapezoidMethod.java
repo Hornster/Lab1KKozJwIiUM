@@ -31,7 +31,8 @@ public class TrapezoidMethod implements IntegralCalculator {
     /**Calculates area of a single trapezoid.
      * @param currentPos The beginning X of the currently calculated trapezoid.
      * @param interval The height (on X axis) of the trapezoid.
-     * @return Area of a trapezoid.*/
+     * @return Area of a trapezoid.
+     * @throws pl.polsl.exceptions.IntegralCalculationException if the integral was not converging.*/
     private double calcTrapezoid(double currentPos, double interval)throws IntegralCalculationException
     {
         double singleResult = 0.0;

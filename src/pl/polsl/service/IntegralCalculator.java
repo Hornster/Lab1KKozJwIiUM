@@ -17,6 +17,7 @@ public interface IntegralCalculator {
     void setIntegralData(IntegralData integralData);
 
     /**Calculates the integral value.
-     * @return Calculated integral value.*/
+     * @return Calculated integral value.
+     * @throws pl.polsl.exceptions.IntegralCalculationException if the integral was not converging.*/
     double calculateIntegral() throws IntegralCalculationException;
 }

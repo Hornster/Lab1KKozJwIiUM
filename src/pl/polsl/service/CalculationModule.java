@@ -54,7 +54,8 @@ public class CalculationModule {
     /**
      * Triggers the calculations and returns the result.
      * @return Result of the approximation (value of the definite integral in given range).
-     * @throws IntegralCalculationException Thrown when there was no function assigned or it was corrupt.
+     * @throws IntegralCalculationException Thrown when there was no function assigned, it was corrupt
+     * or the integral was not converging.
      */
     public double performCalculation() throws IntegralCalculationException {
         calculator.setIntegralData(integral);

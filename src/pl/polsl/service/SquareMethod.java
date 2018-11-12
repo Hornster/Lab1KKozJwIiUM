@@ -34,7 +34,8 @@ public class SquareMethod implements IntegralCalculator {
     /**Calculates single rectangle's area.
      * @param currentBeginning X position of the rectangle on the axis.
      * @param interval The width along X axis of the rectangle.
-     * @return Area of the rectangle used in approximation.*/
+     * @return Area of the rectangle used in approximation.
+     * @throws pl.polsl.exceptions.IntegralCalculationException if the integral was not converging.*/
     private double calcSingleRectangle(double currentBeginning, double interval) throws IntegralCalculationException
     {
         double result;
