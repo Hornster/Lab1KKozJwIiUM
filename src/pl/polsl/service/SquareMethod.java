@@ -2,8 +2,7 @@ package pl.polsl.service;
 
 import com.sun.istack.internal.NotNull;
 import pl.polsl.data.IntegralData;
-import pl.polsl.exceptions.NoFunctionAssignedException;
-import pl.polsl.service.IntegralCalculator;
+import pl.polsl.exceptions.IntegralCalculationException;
 
 /**Calculates value of an integral in given range using squares method.
  * @author Karol Kozuch Group 4 Section 8
@@ -36,7 +35,7 @@ public class SquareMethod implements IntegralCalculator {
      * @param currentBeginning X position of the rectangle on the axis.
      * @param interval The width along X axis of the rectangle.
      * @return Area of the rectangle used in approximation.*/
-    private double calcSingleRectangle(double currentBeginning, double interval) throws NoFunctionAssignedException
+    private double calcSingleRectangle(double currentBeginning, double interval) throws IntegralCalculationException
     {
         double result;
         result = usedIntegralData.calcValue(currentBeginning);
@@ -47,7 +46,7 @@ public class SquareMethod implements IntegralCalculator {
     /**Calculates the stored integral.
      * @return Value of the integral in specified earlier range.*/
     @Override
-    public double calculateIntegral() throws NoFunctionAssignedException {
+    public double calculateIntegral() throws IntegralCalculationException {
         double overallResult = 0.0;
         double currentPos = usedIntegralData.getBeginning();
         double interval = calcInterval();

@@ -3,7 +3,7 @@ package pl.polsl;
 import pl.polsl.data.QueryHistory;
 import pl.polsl.display.ConsoleDisplay;
 import pl.polsl.display.IDisplayModule;
-import pl.polsl.exceptions.NoFunctionAssignedException;
+import pl.polsl.exceptions.IntegralCalculationException;
 import pl.polsl.input.ConsoleInput;
 import pl.polsl.input.IInputModule;
 import pl.polsl.userPrompt.AskUser;
@@ -63,7 +63,7 @@ class Core {
             display.showData(result);
             display.showData("\n");
         }
-        catch(NoFunctionAssignedException ex)
+        catch(IntegralCalculationException ex)
         {
             display.showData(ex.getMessage());
         }

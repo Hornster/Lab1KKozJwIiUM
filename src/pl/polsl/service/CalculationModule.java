@@ -3,7 +3,7 @@ package pl.polsl.service;
 import javafx.util.Pair;
 import pl.polsl.data.CalculationData;
 import pl.polsl.data.IntegralData;
-import pl.polsl.exceptions.NoFunctionAssignedException;
+import pl.polsl.exceptions.IntegralCalculationException;
 import pl.polsl.utils.CalcResultListener;
 
 import java.util.LinkedList;
@@ -54,9 +54,9 @@ public class CalculationModule {
     /**
      * Triggers the calculations and returns the result.
      * @return Result of the approximation (value of the definite integral in given range).
-     * @throws NoFunctionAssignedException Thrown when there was no function assigned or it was corrupt.
+     * @throws IntegralCalculationException Thrown when there was no function assigned or it was corrupt.
      */
-    public double performCalculation() throws NoFunctionAssignedException {
+    public double performCalculation() throws IntegralCalculationException {
         calculator.setIntegralData(integral);
 
         double result = calculator.calculateIntegral();

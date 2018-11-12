@@ -12,9 +12,9 @@ import java.util.Map;
  *
  * @author Karol KozuchGroup 4 Section 8
  * @version 1.1.1*/
-public class QueryHistory implements Iterable {
+public class QueryHistory implements Iterable<SingleQuery> {
     /**Amount of mementos in this collection.*/
-    private static int itemsCount=0;
+    private int itemsCount=0;
     /**All queries made by the user during single runtime.*/
     private Map<Integer, SingleQuery> queries = new HashMap<>();
     /**Adds single query to the history.
@@ -51,7 +51,7 @@ public class QueryHistory implements Iterable {
     /**An iterator used in foreach loop.
      * @return Iterator for foreach loop - allows iterating through SingleQueries in the collection.*/
     @Override
-    public Iterator iterator() {
+    public Iterator<SingleQuery> iterator() {
         return new QueryHistoryIterator();
     }
 

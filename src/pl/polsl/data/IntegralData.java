@@ -3,7 +3,7 @@ package pl.polsl.data;
 import org.mariuszgromada.math.mxparser.Argument;
 import org.mariuszgromada.math.mxparser.Expression;
 import org.mariuszgromada.math.mxparser.Function;
-import pl.polsl.exceptions.NoFunctionAssignedException;
+import pl.polsl.exceptions.IntegralCalculationException;
 
 /**Container for data about an integral that shall be calculated.
  * Please keep in mind that the function shall be initialized before calling calcValue()
@@ -38,17 +38,27 @@ public class IntegralData {
     }
 
     /**Calculates the value of integral in position equal to x. For now, the integral is sewn into the code.
-     * @throws NoFunctionAssignedException - when the integral function was not set before calculations.
+     * @throws IntegralCalculationException - when the integral function was not set before calculations.
      * @param argumentValue The x for which the integral value shall be calculated.
      * @return The value of the integral in argumentValue.*/
-    public double calcValue(double argumentValue) throws NoFunctionAssignedException
+    public double calcValue(double argumentValue) throws IntegralCalculationException
     {
         if(integralFunc == null)
-            throw new NoFunctionAssignedException("Call for a function that was not initialized first!");
+            throw new IntegralCalculationException("Call for a function that was not initialized first!");
 
         //Get first argument and set its value.
         exp1.getArgument(0).setArgumentValue(argumentValue);
-        return exp1.calculate();
+        Double result = exp1.calculate();
+
+        if(result.isInfinite() || result.isNaN())
+        {
+            throw new IntegralCalculationException("Provided parameter cannot be calculated: " + argumentValue +
+                    ". Value equals " + result + " . " + "Possibly the integral does not converge in " + argumentValue+ '.');
+        }
+        else
+        {
+            return result;
+        }
     }
     /**A definite integral has to have a range.
      * @param begin The beginning of the range.

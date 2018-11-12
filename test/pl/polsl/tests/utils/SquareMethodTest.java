@@ -1,7 +1,7 @@
 package pl.polsl.tests.utils;
 
 import pl.polsl.data.IntegralData;
-import pl.polsl.exceptions.NoFunctionAssignedException;
+import pl.polsl.exceptions.IntegralCalculationException;
 import pl.polsl.service.SquareMethod;
 import org.junit.Assert;
 import org.junit.Before;
@@ -35,7 +35,7 @@ public class SquareMethodTest {
 
             Assert.assertEquals("Calculatin integralData of x^3 + x^2: ", 0.273, result, 0.02);
         }
-        catch(NoFunctionAssignedException ex)
+        catch(IntegralCalculationException ex)
         {
             fail("Test failed: " + ex.getMessage());
         }
