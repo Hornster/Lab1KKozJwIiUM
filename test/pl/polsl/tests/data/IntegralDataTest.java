@@ -3,8 +3,8 @@ package pl.polsl.tests.data;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import pl.polsl.data.IntegralData;
-import pl.polsl.exceptions.IntegralCalculationException;
+import pl.polsl.model.IntegralData;
+import pl.polsl.model.exceptions.IntegralCalculationException;
 
 import static junit.framework.TestCase.fail;
 

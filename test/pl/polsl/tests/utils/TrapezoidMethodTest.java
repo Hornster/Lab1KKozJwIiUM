@@ -1,8 +1,8 @@
 package pl.polsl.tests.utils;
 
-import pl.polsl.data.IntegralData;
-import pl.polsl.exceptions.IntegralCalculationException;
-import pl.polsl.service.TrapezoidMethod;
+import pl.polsl.model.IntegralData;
+import pl.polsl.model.exceptions.IntegralCalculationException;
+import pl.polsl.controller.TrapezoidMethod;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;

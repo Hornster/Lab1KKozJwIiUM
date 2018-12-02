@@ -2,12 +2,10 @@ package pl.polsl.tests.data;
 
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
-import pl.polsl.data.CalculationData;
-import pl.polsl.data.IntegralData;
-import pl.polsl.data.SingleQuery;
-import pl.polsl.exceptions.IntegralCalculationException;
+import pl.polsl.model.CalculationData;
+import pl.polsl.model.IntegralData;
+import pl.polsl.model.SingleQuery;
 
 import java.util.LinkedList;
 import java.util.List;

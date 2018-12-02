@@ -3,12 +3,11 @@ package pl.polsl.tests.data;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import pl.polsl.data.CalculationData;
-import pl.polsl.data.IntegralData;
-import pl.polsl.data.QueryHistory;
-import pl.polsl.data.SingleQuery;
-import pl.polsl.exceptions.IntegralCalculationException;
-import pl.polsl.exceptions.NoQueryFoundException;
+import pl.polsl.model.CalculationData;
+import pl.polsl.model.IntegralData;
+import pl.polsl.model.QueryHistory;
+import pl.polsl.model.SingleQuery;
+import pl.polsl.model.exceptions.NoQueryFoundException;
 
 import static junit.framework.TestCase.fail;
 
