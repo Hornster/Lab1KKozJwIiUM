@@ -1,6 +1,6 @@
 package pl.polsl.model;
 
-import pl.polsl.controller.local.CommandParser;
+import pl.polsl.server.CommandParser;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -9,8 +9,37 @@ import java.util.List;
  * @version 1.0
  */
 public class ServerCommand {
+    /**Defines sequence of arguments in SetIntegral command.*/
+    public enum setIntegralValues{
+        FORMULA(0), RANGE_BEGIN(1), RANGE_END(2);
+        public final int value;
+
+        setIntegralValues(int value)
+        {
+            this.value = value;
+        }
+
+        public int getValue() {
+            return value;
+        }
+    }
+    /**Defines sequence of arguments in SetMethod command.*/
+    public enum setMethodValues{
+        METHOD(0), ACCURACY(1);
+        private final int value;
+
+        setMethodValues(int value)
+        {
+            this.value = value;
+        }
+
+        public int getValue()
+        {
+            return value;
+        }
+    }
     /**
-     * Description associated with this command.
+     * Description associated with this command. Contains info when the stored command is recognized as incorrect.
      */
     private String description;
     /**
@@ -41,6 +70,10 @@ public class ServerCommand {
     public CommandParser.commandType getCommandType() {
         return commandType;
     }
+    public void setCommandType(CommandParser.commandType newType)
+    {
+        commandType = newType;
+    }
 
     public ServerCommand(CommandParser.commandType commandType)
     {
@@ -55,5 +88,26 @@ public class ServerCommand {
         data = values;
     }
 
+    /**
+     * Prepares a description of this object.
+     * @return Description only if commandType was INCORRECT. String formed by concat of description and data List otherwise.
+     */
+    @Override
+    public String toString()
+    {
+        if(commandType == CommandParser.commandType.INCORRECT)
+        {
+            return description;
+        }
+        else
+        {
+            String str = description;
 
+            for(String dataChunk : data)
+            {
+                str = str.concat(dataChunk + "\n");
+            }
+            return str;
+        }
+    }
 }

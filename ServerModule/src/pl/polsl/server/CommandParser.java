@@ -1,8 +1,9 @@
-package pl.polsl.controller.local;
+package pl.polsl.server;
 
 import com.sun.security.ntlm.Server;
 import pl.polsl.model.CommandsDescriptions;
 import pl.polsl.model.IntegralData;
+import pl.polsl.model.PredefinedCommunicates;
 import pl.polsl.model.ServerCommand;
 import pl.polsl.utility.dataCheck.DataChk;
 import pl.polsl.utility.dataCheck.ParseModifyString;
@@ -117,7 +118,7 @@ public class CommandParser {
 
             ServerCommand command = new ServerCommand(commandType.DISCONNECT);
             command.setDescription("Client disconnects.");
-            command.addValue("Goodbye! Be well!");
+            command.addValue(PredefinedCommunicates.disconnectMessage());
 
             return command;
         }

@@ -1,6 +1,6 @@
 package pl.polsl.model;
 
-import pl.polsl.controller.local.CommandParser;
+import pl.polsl.server.CommandParser;
 
 import java.util.HashMap;
 import java.util.Map;

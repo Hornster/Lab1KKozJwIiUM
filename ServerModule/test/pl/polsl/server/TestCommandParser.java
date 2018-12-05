@@ -1,9 +1,7 @@
 package pl.polsl.server;
 
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
-import pl.polsl.controller.local.CommandParser;
 import pl.polsl.model.ServerCommand;
 
 public class TestCommandParser {
