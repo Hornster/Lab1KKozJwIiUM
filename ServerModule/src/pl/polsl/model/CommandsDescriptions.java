@@ -8,7 +8,8 @@ import java.util.Map;
 public class CommandsDescriptions {
     private Map<CommandParser.commandType, String> descriptions = new HashMap<>();
 
-    public CommandsDescriptions()
+    private static CommandsDescriptions instance;
+    private CommandsDescriptions()
     {
         descriptions.put(CommandParser.commandType.HELP, "Shows info about available commands.");
         descriptions.put(CommandParser.commandType.CALCULATE, "Tells the server to perform calculations, using data provided to it.");
@@ -28,7 +29,7 @@ public class CommandsDescriptions {
      * @param commandType Type of command.
      * @return String containing description of given command.
      */
-    public String getCommandDesc(CommandParser.commandType commandType)
+    public String getCommandsDesc(CommandParser.commandType commandType)
     {
         return descriptions.get(commandType);
     }
@@ -44,5 +45,15 @@ public class CommandsDescriptions {
         command.setDescription(description);
 
         return command;
+    }
+
+    public static CommandsDescriptions getInstance()
+    {
+        if(instance == null)
+        {
+            instance = new CommandsDescriptions();
+        }
+
+        return instance;
     }
 }

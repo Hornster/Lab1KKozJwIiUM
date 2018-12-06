@@ -57,4 +57,23 @@ public class PredefinedCommunicates {
         return "Calculations result: ";
     }
 
+    /**
+     * Header for HELP command.
+     * @return Explanation of the HELP command.
+     */
+    public static String helpHeader()
+    {
+        return "Contains client-available commands descriptions.";
+    }
+
+    /**
+     * Header for HELP command description.
+     * @return Simple header for the commands description, informing about beginning of the description.
+     */
+    public static String helpDescriptionHeader()
+    {
+        return "Available commands: \n";
+    }
+
+
 }

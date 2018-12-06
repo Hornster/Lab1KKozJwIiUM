@@ -1,7 +1,6 @@
 package pl.polsl.controller.local;
 
-import javafx.css.ParsedValue;
-import javafx.util.Pair;
+import pl.polsl.model.CommandsDescriptions;
 import pl.polsl.model.PredefinedCommunicates;
 import pl.polsl.model.ServerCommand;
 import pl.polsl.model.exceptions.IntegralCalculationException;
@@ -26,7 +25,7 @@ public class Core {
     /**Manages calculation performing and data assigning (needed for the calculations).*/
     private CalcModuleServerAdapter calculationModule;
     /**States of the program.*/
-    private enum programStates{EXIT, RETRIEVE_COMMAND, PROCESS_COMMAND}
+    private enum programStates{EXIT, RETRIEVE_COMMAND, PROCESS_COMMAND, AWAIT_CONNECTION}
 
 
     /**Stores current state of the program.*/
@@ -38,7 +37,7 @@ public class Core {
     /**Ctor that initializes I/O modules and integral data (integral data for now - this will be changed in exercise 2).*/
     private Core()
     {
-        state = programStates.RETRIEVE_COMMAND;
+        state = programStates.AWAIT_CONNECTION;
         calculationModule = new CalcModuleServerAdapter(new CalculationModule());
         queryManager = new QueryManager();
 
@@ -115,6 +114,33 @@ public class Core {
     }
 
     /**
+     * Prepares the contents of HELP type command answer.
+     * @param processedCommand Command that will be used to return the answer.
+     * @return Command with every client-available command description.
+     */
+    private ServerCommand setHelp(ServerCommand processedCommand)
+    {
+        CommandsDescriptions commandsDescriptions= CommandsDescriptions.getInstance();
+        String singleHelpLine;
+        processedCommand.setDescription(PredefinedCommunicates.helpHeader());
+        CommandParser.commandType[] commandTypes = CommandParser.commandType.values();
+        processedCommand.addValue(PredefinedCommunicates.helpDescriptionHeader());
+
+        for(int i = 0; i < CommandParser.commandType.values().length; i++)
+        {
+            CommandParser.commandType commandType = CommandParser.commandType.values()[i];
+            if(commandParser.isCommandServerSideOnly(commandType)) {
+                continue;                                           //Client doesn't need to know about server-side only commands.
+            }
+
+            singleHelpLine = commandType.toString();
+            singleHelpLine = singleHelpLine.concat(' '+ commandsDescriptions.getCommandsDesc(commandType)); //Space bar for readability.
+            processedCommand.addValue(singleHelpLine);
+        }
+
+        return processedCommand;
+    }
+    /**
      * Sens passed message to client, right after conversion to String form.
      * @param command Command containing message to send.
      */
@@ -126,12 +152,13 @@ public class Core {
      * Manages client disconnection sequence.
      * @param command Command associated with disconnection.
      */
-    private void DisconnectClient(ServerCommand command)
+    private void disconnectClient(ServerCommand command)
     {
         command.setDescription(PredefinedCommunicates.genericAcknowledge());
         sendMessage(command);
         try {
             connectionManager.close();
+            changeState(programStates.AWAIT_CONNECTION);
         }
         catch(IOException ex)
         {
@@ -170,6 +197,20 @@ public class Core {
     }
 
     /**
+     * Calls methods responsible for awaiting for new connection.
+     */
+    private void awaitNewConnection()
+    {
+        try
+        {
+            connectionManager.awaitConnection();
+        }
+        catch(IOException ex)
+        {
+            System.out.println("Error: " + ex.getMessage());
+        }
+    }
+    /**
      * Manages processing of sent command.
      * @param processedCommand Command to process.
      */
@@ -180,11 +221,13 @@ public class Core {
         {
             case DISCONNECT:
                 processedCommand.setDescription(PredefinedCommunicates.genericAcknowledge());
-                DisconnectClient(processedCommand);
+                disconnectClient(processedCommand);
                 return;                             //DISCONNECT is special - it has to sebd a farewell message first and THEN disconnect the client.
             case HELP:
+                commandToReturn = setHelp(processedCommand);
+                break;
             case INCORRECT:
-                processedCommand.setDescription(PredefinedCommunicates.genericAcknowledge());
+                commandToReturn = processedCommand;
                 break;                             //The command doesn't require too much of work - return answer instantly.
             case SET_INTEGRAL:
                 processedCommand.setDescription(PredefinedCommunicates.valueAssigned());
@@ -218,13 +261,20 @@ public class Core {
                 case PROCESS_COMMAND:
                     processCommand(processedCommand);
 
-                    changeState(programStates.RETRIEVE_COMMAND);
+                    if(processedCommand.getCommandType() != CommandParser.commandType.DISCONNECT) {
+                        changeState(programStates.RETRIEVE_COMMAND);            //If client did not disconnect, we can keep listening for messages.
+                    }                                                           //Otherwise simply let it switch to AWAIT_CONNECTION state.
                     break;
 
                 case RETRIEVE_COMMAND:
                     processedCommand = retrieveCommand();
 
                     changeState(programStates.PROCESS_COMMAND);
+                    break;
+
+                case AWAIT_CONNECTION:
+                    awaitNewConnection();
+                    changeState(programStates.RETRIEVE_COMMAND);
                     break;
 
                 default:

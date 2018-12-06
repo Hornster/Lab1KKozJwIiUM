@@ -8,8 +8,10 @@ import pl.polsl.model.ServerCommand;
 import pl.polsl.utility.dataCheck.DataChk;
 import pl.polsl.utility.dataCheck.ParseModifyString;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 /** Used to determine if received commands are correct.
  * @author Karol Kozuch Group 4 Section 8
@@ -21,12 +23,28 @@ public class CommandParser {
      * Other indicate what type of command is this.
      */
     public enum commandType{DISCONNECT, HELP, SET_INTEGRAL, SET_METHOD, CALCULATE, GET_HISTORY, INCORRECT}
-    CommandsDescriptions commandsDescriptions = new CommandsDescriptions();
+    private Map<commandType, Boolean> isCommandServerSideOnly = new HashMap<commandType, Boolean>();
     /**
+     * Offers explanation of every command and method returning ServerCommand of INCORRECT type with customizable description.
+     */
+    private CommandsDescriptions commandsDescriptions;
+     /**
      * Stores parsers that can be used to find out info about the command.
      */
     List<IParser> parsers = new LinkedList<>();
 
+    /**
+     * Initializes the isCommandServerSideOnly map. Assigns false to commands which are universal and true to server-side only.
+     */
+    private void iniIsCommandServersideOnly()
+    {
+        for(commandType type: commandType.values())
+        {
+            isCommandServerSideOnly.put(type, false);                   //Set all commands to false (not only server-side)...
+        }
+
+        isCommandServerSideOnly.replace(commandType.INCORRECT, true);   //...and make corrections where necessary.
+    }
     public CommandParser()
     {
         parsers.add(helpCommandParser);
@@ -35,6 +53,10 @@ public class CommandParser {
         parsers.add(calculateCommandParser);
         parsers.add(getHistoryCommandParser);
         parsers.add(setMethodCommandParser);
+
+        iniIsCommandServersideOnly();
+
+        commandsDescriptions = CommandsDescriptions.getInstance();
     }
 
     /**
@@ -85,17 +107,7 @@ public class CommandParser {
                 return null;
             }
 
-            ServerCommand command = new ServerCommand(commandType.HELP);
-            command.setDescription("Contains client-available commands descriptions.");
-            commandType[] commandTypes = commandType.values();
-            command.addValue("Available commands: \n");
-
-            for(int i = 0; i < commandType.values().length; i++)
-            {
-                command.addValue(commandsDescriptions.getCommandDesc(commandTypes[i]));
-            }
-
-            return command;
+            return new ServerCommand(commandType.HELP);
         }
     };
     /**
@@ -253,7 +265,24 @@ public class CommandParser {
         }
     };
 
-
+    /**
+     * If very unusual command was detected (for example null object) this method, when called, constructs a DISCONNECT type
+     * command.
+     * @return DISCONNECT type command.
+     */
+    private ServerCommand createEmergencyDisconnect()
+    {
+        return new ServerCommand(commandType.DISCONNECT);
+    }
+    /**
+     * Used to check if command of given type is server-side only.
+     * @param type Type of command to check.
+     * @return TRUE if command is server-side only. FALSE otherwise.
+     */
+    public boolean isCommandServerSideOnly(commandType type)
+    {
+        return isCommandServerSideOnly.get(type);
+    }
     /**
      * Manages command parsing process.
      * @param command Command to parse.
@@ -261,6 +290,11 @@ public class CommandParser {
      */
     public ServerCommand ParseCommand(String command)
     {
+        if(command == null)
+        {
+            return createEmergencyDisconnect();
+        }
+
         command = command.toLowerCase();
         command = ParseModifyString.removeWhiteChars(command);
         ServerCommand resultCommand = null;

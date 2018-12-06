@@ -6,6 +6,7 @@ import java.net.*;
 public class ConnectionManager implements Closeable {
     private int serverPort;
     private ServerSocket serverSocket;
+    private Socket clientSocket;
 
     private PrintWriter output;
     private BufferedReader input;
@@ -39,6 +40,7 @@ public class ConnectionManager implements Closeable {
             Socket socket = serverSocket.accept();
 
             iniIO(socket);
+            clientSocket = socket;
             return socket;
         }
     }
@@ -49,7 +51,8 @@ public class ConnectionManager implements Closeable {
      */
     public void SendAnswer(String answer)
     {
-        output.println(answer);
+        output.print(answer);
+        output.flush();
     }
 
     /**
@@ -81,8 +84,12 @@ public class ConnectionManager implements Closeable {
      */
     @Override
     public void close() throws IOException {
-        if(serverSocket.isBound()) {
+        /*if(serverSocket.isBound()) {
             serverSocket.close();
+        }*/
+        if(clientSocket.isConnected() && clientSocket.isBound())
+        {
+            clientSocket.close();
         }
     }
 

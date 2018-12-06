@@ -36,6 +36,10 @@ public class CalculationModule {
         }
     }
 
+    public CalculationModule()
+    {
+        selectMethod('t');          //By default, select the trapezoidal method.
+    }
     /**Assigns input function to integral.
      * @param functionSyntax Syntax of newly input function.*/
     public void setFunction(String functionSyntax)
