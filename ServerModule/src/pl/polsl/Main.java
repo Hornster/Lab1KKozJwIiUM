@@ -1,6 +1,6 @@
 package pl.polsl;
 
-import pl.polsl.controller.local.Core;
+import pl.polsl.controller.Core;
 
 /**Contains entrance point for the program.
  * @author Karol Kozuch Group 4 Section 8

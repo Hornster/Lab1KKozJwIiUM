@@ -1,5 +1,5 @@
 package pl.polsl.model;
-/**Stores predefined communicates that the server can send to the client.
+/**Stores predefined communicates that the server can send to the clientside.
  * @author Karol Kozuch Group 4 Section 8
  * @version 1.0*/
 public class PredefinedCommunicates {
@@ -14,7 +14,7 @@ public class PredefinedCommunicates {
 
     /**
      * Predefined message for answer to disconnect command.
-     * @return A farewell message to disconnecting client.
+     * @return A farewell message to disconnecting clientside.
      */
     public static String disconnectMessage()
     {
@@ -31,7 +31,7 @@ public class PredefinedCommunicates {
     }
 
     /**
-     * Informs client about not recognized approximation method.
+     * Informs clientside about not recognized approximation method.
      * @return Error message indicating wrong input of approximation method that should be used.
      */
     public static String incorrectCalcMethod()
@@ -63,7 +63,7 @@ public class PredefinedCommunicates {
      */
     public static String helpHeader()
     {
-        return "Contains client-available commands descriptions.";
+        return "Contains clientside-available commands descriptions.";
     }
 
     /**

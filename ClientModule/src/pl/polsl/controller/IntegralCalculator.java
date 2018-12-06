@@ -1,4 +1,4 @@
-package pl.polsl.controller.local;
+package pl.polsl.controller;
 
 
 import pl.polsl.model.IntegralData;

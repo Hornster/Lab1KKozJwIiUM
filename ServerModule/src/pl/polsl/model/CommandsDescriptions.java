@@ -13,7 +13,7 @@ public class CommandsDescriptions {
     {
         descriptions.put(CommandParser.commandType.HELP, "Shows info about available commands.");
         descriptions.put(CommandParser.commandType.CALCULATE, "Tells the server to perform calculations, using data provided to it.");
-        descriptions.put(CommandParser.commandType.DISCONNECT, "Disconnects the client (you) from the server.");
+        descriptions.put(CommandParser.commandType.DISCONNECT, "Disconnects the clientside (you) from the server.");
         descriptions.put(CommandParser.commandType.GET_HISTORY, "Returns all successful queries done while the server is running.");
         descriptions.put(CommandParser.commandType.SET_INTEGRAL, "Sets the integral data. Usage:" +
                 "\n set_integral <math_function>, <range_begin>, <range_end> \n" +
@@ -37,7 +37,7 @@ public class CommandsDescriptions {
     /**
      * Creates a command containing no values, of type INCORRECT and with passed description.
      * @param description String with description that will be put in the command description field.
-     * @return Incorrect command(response to incorrect command), ready to be sent back to client.
+     * @return Incorrect command(response to incorrect command), ready to be sent back to clientside.
      */
     public ServerCommand createIncorrectCommand(String description)
     {

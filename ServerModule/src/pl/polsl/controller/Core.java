@@ -1,4 +1,4 @@
-package pl.polsl.controller.local;
+package pl.polsl.controller;
 
 import pl.polsl.model.CommandsDescriptions;
 import pl.polsl.model.PredefinedCommunicates;
@@ -116,7 +116,7 @@ public class Core {
     /**
      * Prepares the contents of HELP type command answer.
      * @param processedCommand Command that will be used to return the answer.
-     * @return Command with every client-available command description.
+     * @return Command with every clientside-available command description.
      */
     private ServerCommand setHelp(ServerCommand processedCommand)
     {
@@ -141,7 +141,7 @@ public class Core {
         return processedCommand;
     }
     /**
-     * Sens passed message to client, right after conversion to String form.
+     * Sens passed message to clientside, right after conversion to String form.
      * @param command Command containing message to send.
      */
     private void sendMessage(ServerCommand command)
@@ -149,7 +149,7 @@ public class Core {
         connectionManager.SendAnswer(command.toString());
     }
     /**
-     * Manages client disconnection sequence.
+     * Manages clientside disconnection sequence.
      * @param command Command associated with disconnection.
      */
     private void disconnectClient(ServerCommand command)
@@ -162,7 +162,7 @@ public class Core {
         }
         catch(IOException ex)
         {
-            System.out.println("Unable to disconnect client! Socket corrupted!");
+            System.out.println("Unable to disconnect clientside! Socket corrupted!");
             changeState(programStates.EXIT);
         }
     }
@@ -187,7 +187,7 @@ public class Core {
             }
             catch(IOException exc)
             {
-                System.out.println("Unable to disconnect client, possible socket corruption! Shutting down server. Error: "+ exc.getMessage());
+                System.out.println("Unable to disconnect clientside, possible socket corruption! Shutting down server. Error: "+ exc.getMessage());
                 changeState(programStates.EXIT);
             }
 
@@ -222,7 +222,7 @@ public class Core {
             case DISCONNECT:
                 processedCommand.setDescription(PredefinedCommunicates.genericAcknowledge());
                 disconnectClient(processedCommand);
-                return;                             //DISCONNECT is special - it has to sebd a farewell message first and THEN disconnect the client.
+                return;                             //DISCONNECT is special - it has to sebd a farewell message first and THEN disconnect the clientside.
             case HELP:
                 commandToReturn = setHelp(processedCommand);
                 break;
@@ -262,7 +262,7 @@ public class Core {
                     processCommand(processedCommand);
 
                     if(processedCommand.getCommandType() != CommandParser.commandType.DISCONNECT) {
-                        changeState(programStates.RETRIEVE_COMMAND);            //If client did not disconnect, we can keep listening for messages.
+                        changeState(programStates.RETRIEVE_COMMAND);            //If clientside did not disconnect, we can keep listening for messages.
                     }                                                           //Otherwise simply let it switch to AWAIT_CONNECTION state.
                     break;
 
@@ -291,7 +291,7 @@ public class Core {
     private void startServer() throws IOException
     {
         ConfigLoader configLoader = new ConfigLoader();
-        configLoader.LoadConfiguration();
+        configLoader.loadConfiguration();
 
         int port = Integer.parseInt(configLoader.getUsedPort());
         connectionManager = new ConnectionManager(port);

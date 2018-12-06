@@ -1,10 +1,9 @@
-package pl.polsl.controller.local;
+package pl.polsl.controller;
 
 import javafx.util.Pair;
 import pl.polsl.model.ServerCommand;
 import pl.polsl.model.exceptions.IntegralCalculationException;
 import pl.polsl.model.queryHistory.CalcResultListener;
-import pl.polsl.utility.dataCheck.ParseModifyString;
 
 public class CalcModuleServerAdapter {
     /**The adaptee of this adapter.*/

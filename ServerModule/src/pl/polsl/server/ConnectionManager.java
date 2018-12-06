@@ -27,8 +27,8 @@ public class ConnectionManager implements Closeable {
 
     /**
      * Awaits for new connection. Holds the thread.
-     * @return Reference to socket which the client got connected to, ready to work. Null if the server was not started with startServer method.
-     * @throws IOException If not able to establish connection with client.
+     * @return Reference to socket which the clientside got connected to, ready to work. Null if the server was not started with startServer method.
+     * @throws IOException If not able to establish connection with clientside.
      */
     public Socket awaitConnection() throws IOException
     {
@@ -46,7 +46,7 @@ public class ConnectionManager implements Closeable {
     }
 
     /**
-     * Sends string with answer to the client bound to socket.
+     * Sends string with answer to the clientside bound to socket.
      * @param answer String with answer.
      */
     public void SendAnswer(String answer)
@@ -57,8 +57,8 @@ public class ConnectionManager implements Closeable {
 
     /**
      * Retrieves a command from the socket.
-     * @return String containing a command from the client socket.
-     * @throws IOException If not able to read from the client.
+     * @return String containing a command from the clientside socket.
+     * @throws IOException If not able to read from the clientside.
      */
     public String RetrieveCommand()throws IOException
     {

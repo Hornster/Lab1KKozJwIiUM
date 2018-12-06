@@ -90,18 +90,18 @@ public class ServerCommand {
 
     /**
      * Prepares a description of this object.
-     * @return Description only if commandType was INCORRECT. String formed by concat of description and data List otherwise.
+     * @return Description and commandType only if commandType was INCORRECT. String formed by concat of command type, description and data List otherwise.
      */
     @Override
     public String toString()
     {
         if(commandType == CommandParser.commandType.INCORRECT)
         {
-            return description;
+            return commandType.toString() + ' '+ description;
         }
         else
         {
-            String str = description;
+            String str = commandType.toString() + ' '+ description + '\n';
 
             for(String dataChunk : data)
             {

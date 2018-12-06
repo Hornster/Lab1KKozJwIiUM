@@ -1,4 +1,4 @@
-package pl.polsl.server;
+package pl.polsl.clientside;
 
 import pl.polsl.utility.dataCheck.ParseModifyString;
 
@@ -82,7 +82,7 @@ public class ConfigLoader {
      * Manages configuration loading. After calling this method data can be retrieved.
      * @return Loading result. Check {@link ConfigLoader.loadingResult}
      */
-    public loadingResult loadConfiguration()
+    public loadingResult LoadConfiguration()
     {
         loadingResult result = readFile();
 
@@ -152,3 +152,5 @@ public class ConfigLoader {
 
 
 }
+
+//TODO add reading of the IP from the config file.

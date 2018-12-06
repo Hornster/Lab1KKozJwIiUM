@@ -97,7 +97,7 @@ public class CommandParser {
         /**
          * Checks if the input contains HELP command.
          * @param input Command to parse.
-         * @return ServerCommand containing descriptions of all client-available commands in values field,together with a header.
+         * @return ServerCommand containing descriptions of all clientside-available commands in values field,together with a header.
          */
         @Override
         public ServerCommand parseCommand(String input)
@@ -186,7 +186,7 @@ public class CommandParser {
     private IParser setMethodCommandParser = new IParser() {
         /**
          * Tries to parse passed command as a SET_METHOD command.
-         * @param input Command provided by the client.
+         * @param input Command provided by the clientside.
          * @return ServerCommand containing data for approximation method. ServerCommand of INCORRECT type if not managed to parse correctly. NULL if not recognized as SET_METHOD command.
          */
         @Override
@@ -226,7 +226,7 @@ public class CommandParser {
     {
         /**
          * Checks if the command is of CALCULATE type.
-         * @param input Command provided by client.
+         * @param input Command provided by clientside.
          * @return ServerCommand of CALCULATE type. NULL if not recognized as CALCULATE command.
          */
         @Override
@@ -248,7 +248,7 @@ public class CommandParser {
     private IParser getHistoryCommandParser = new IParser() {
         /**
          * Tries to parse the command to GET_HISTORY type.
-         * @param input Command delivered by client.
+         * @param input Command delivered by clientside.
          * @return ServerCommand of GET_HISTORY type. NULL if not recognized as GET_HISTORY.
          */
         @Override
