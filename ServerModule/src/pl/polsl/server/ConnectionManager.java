@@ -97,3 +97,4 @@ public class ConnectionManager implements Closeable {
         System.out.println("Greetings, Master! What is your wish today?");
     }
 }
+//TODO setup this class for client-side
