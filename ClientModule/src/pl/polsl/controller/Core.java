@@ -1,16 +1,25 @@
 package pl.polsl.controller;
 
 import javafx.util.Pair;
+import pl.polsl.clientside.CommandWrapper;
+import pl.polsl.clientside.ConfigLoader;
+import pl.polsl.clientside.ConnectionManager;
+import pl.polsl.clientside.IConnectionManager;
 import pl.polsl.view.display.ConsoleDisplay;
 import pl.polsl.view.display.IDisplayModule;
 import pl.polsl.view.input.ConsoleInput;
 import pl.polsl.view.input.IInputModule;
 import pl.polsl.view.userPrompt.ShowMsgToUser;
 
+import java.io.IOException;
+
 /**Contains the core methods for the program.
  * @author Karol Kozuch Group 4 Section 8
  * @version 1.2*/
 public class Core {
+    CommandWrapper commandWrapper = new CommandWrapper();
+    /**Manages connection with the server (establishes it, reads and sends data through streams, etc.)*/
+    private IConnectionManager connectionManager = new ConnectionManager();
     /**Responsible for sending messages to the user.*/
     private ShowMsgToUser showMsgToUser;
     /**States of the program.*/
@@ -45,7 +54,18 @@ public class Core {
     /**Enables the process of calculating the integral value.*/
     private void triggerCalculations()
     {
-        //TODO send command CALCULATE
+        commandWrapper.newArgList();
+        try {
+            String calculateCommand = commandWrapper.createCommand(CommandWrapper.commandType.CALCULATE);
+            connectionManager.sendMessage(calculateCommand);
+
+            calculateCommand = connectionManager.retreiveMessage();
+            display.showData(calculateCommand);
+        }
+        catch(IOException ex)
+        {
+            System.out.println("Error while retrieving server answer! \n" + ex.getMessage());
+        }
     }
     /**Changes state of the program.
      * @param newState The new state of the program.*/
@@ -75,23 +95,77 @@ public class Core {
     }
 
     /**Manages selection of the calculation method process.*/
-    private char methodSelection()
+    private void methodSelection()
     {
-        char selection;
+        Character selection;
+        String accuracy;
+        String command = new String();
 
-        selection = showMsgToUser.askUsrForMethod();
+        try {
+            do {
+                commandWrapper.newArgList();
+                selection = showMsgToUser.askUsrForMethod();
+                accuracy = showMsgToUser.askUsrForAccuracy();
 
-        return selection;
+                commandWrapper.addArgument(selection.toString());
+                commandWrapper.addArgument(accuracy);
+
+                command = commandWrapper.createCommand(CommandWrapper.commandType.SET_METHOD);
+
+                connectionManager.sendMessage(command);
+                command = connectionManager.retreiveMessage();
+                display.showData(command);                                          //At the end, show the message to the user.
+
+            } while (!commandWrapper.ChkIfAnswerCorrect(command));          //Keep maltreat the user 'till they provide correct data.
+        }
+        catch(IOException ex)
+        {
+            System.out.println("Could not retrieve answer from the server (SET_METHOD)! \n" + ex.getMessage());
+        }
     }
     /**Manages the process of setting the range of the integral calculation.*/
-    private Pair<String, String> setIntegralRange()
+    private void setIntegralRange()
     {
-        return showMsgToUser.askUsrForRange();
+        String command;
+
+        try {
+            do {
+                String integralFormula = showMsgToUser.askUsrForFunction();
+                Pair<String, String> integralRange = showMsgToUser.askUsrForRange();
+
+                commandWrapper.newArgList();
+                commandWrapper.addArgument(integralFormula);
+                commandWrapper.addArgument(integralRange.getKey());
+                commandWrapper.addArgument(integralRange.getValue());
+
+                command = commandWrapper.createCommand(CommandWrapper.commandType.SET_INTEGRAL);
+                connectionManager.sendMessage(command);
+
+                command = connectionManager.retreiveMessage();
+                display.showData(command);
+            }while(!commandWrapper.ChkIfAnswerCorrect(command));
+        }
+        catch(IOException ex)
+        {
+            System.out.println("Could not read answer for the server (SET_INTEGRAL)! " + ex.getMessage());
+        }
     }
     /**Manages process of showing the history to the user.*/
     private void showCalculationHistory()
     {
-        //TODO prepare Get_histroy command and send it to server.
+        try {
+            commandWrapper.newArgList();
+            String command = commandWrapper.createCommand(CommandWrapper.commandType.GET_HISTORY);
+            connectionManager.sendMessage(command);
+
+            command = connectionManager.retreiveMessage();
+            display.showData(command);                                      //There's no user influence in here - they do not provide any data for this
+                                                                            // command so we can assume that it is always correct.
+        }
+        catch(IOException ex)
+        {
+            System.out.println("Could not retrieve answer from the server! \n" + ex.getMessage());
+        }
     }
 
 
@@ -120,8 +194,6 @@ public class Core {
                     break;
                 case CALCULATE_INTEGER:
                     methodSelection();
-                    calculationModule.setAccuracy(showMsgToUser.askUsrForAccuracy());
-                    calculationModule.setFunction(showMsgToUser.askUsrForFunction());
                     setIntegralRange();
 
                     triggerCalculations();
@@ -134,12 +206,35 @@ public class Core {
             }
         }
     }
+
+    /**
+     * Manages configuration loading from a properties file.
+     */
+    private void loadConfiguration()
+    {
+        ConfigLoader configLoader = new ConfigLoader();
+        ConfigLoader.loadingResult loadingResult = configLoader.loadConfiguration();
+
+        try {
+            showMsgToUser.showUserConfigLoadingInfo(loadingResult);
+            connectionManager.setServerPort(configLoader.getUsedPort());
+            connectionManager.setServerAddress(configLoader.getServerIP());
+            connectionManager.connectToServer();
+        }
+        catch(IOException ex)
+        {
+            System.out.println("Could not connect to server! \n" + ex.getMessage() + " \n \n closing client.");
+            changeState(programStates.EXIT);
+        }
+    }
     /**Creates instance of the core, then calls the main loop of the program.*/
     static public void start()
     {
         if (core == null) {
             core = new Core();
         }
+
+        core.loadConfiguration();
 
         core.mainLoop();
     }

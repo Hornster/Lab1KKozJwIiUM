@@ -3,7 +3,7 @@ package pl.polsl.utility;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import pl.polsl.controller.SquareMethod;
+import pl.polsl.controller.calculation.SquareMethod;
 import pl.polsl.model.IntegralData;
 import pl.polsl.model.exceptions.IntegralCalculationException;
 

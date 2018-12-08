@@ -1,5 +1,7 @@
 package pl.polsl.controller;
 
+import pl.polsl.controller.calculation.CalcModuleServerAdapter;
+import pl.polsl.controller.calculation.CalculationModule;
 import pl.polsl.model.CommandsDescriptions;
 import pl.polsl.model.PredefinedCommunicates;
 import pl.polsl.model.ServerCommand;
@@ -177,10 +179,13 @@ public class Core {
         try {
             newCommand = connectionManager.RetrieveCommand();
             parsedCommand = commandParser.ParseCommand(newCommand);
+
+            changeState(programStates.PROCESS_COMMAND);
         }
         catch(IOException ex)
         {
             System.out.println("Unable to retrieve command! Error: " + ex.getMessage());
+            changeState(programStates.AWAIT_CONNECTION);                                    //Client is lost, so let's wait for new one
             try
             {
                 connectionManager.close();
@@ -222,7 +227,7 @@ public class Core {
             case DISCONNECT:
                 processedCommand.setDescription(PredefinedCommunicates.genericAcknowledge());
                 disconnectClient(processedCommand);
-                return;                             //DISCONNECT is special - it has to sebd a farewell message first and THEN disconnect the clientside.
+                return;                             //DISCONNECT is special - it has to send a farewell message first and THEN disconnect the clientside.
             case HELP:
                 commandToReturn = setHelp(processedCommand);
                 break;
@@ -268,8 +273,6 @@ public class Core {
 
                 case RETRIEVE_COMMAND:
                     processedCommand = retrieveCommand();
-
-                    changeState(programStates.PROCESS_COMMAND);
                     break;
 
                 case AWAIT_CONNECTION:

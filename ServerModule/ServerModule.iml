@@ -19,5 +19,6 @@
       </library>
     </orderEntry>
     <orderEntry type="library" name="MathParserMXparser-v.4.2.0-jdk.1.8" level="project" />
+    <orderEntry type="module" module-name="ClientModule" />
   </component>
 </module>

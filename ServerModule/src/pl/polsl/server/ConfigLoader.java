@@ -9,6 +9,10 @@ import java.io.*;
  * @version 1.0
  */
 public class ConfigLoader {
+    /**The server port text.*/
+    private final String serverPortText = "server-port";
+    /**Separator separating name of the property from its value.*/
+    private final char separator = ':';
     /**
      * Stores possible loading states.
      * NOT_PERFORMED - loadConfiguration was not called, even.
@@ -52,11 +56,11 @@ public class ConfigLoader {
         @Override
         public boolean readValue(String property) {
             property = property.toLowerCase();              //Make the property ignore letter size
-            String serverPort = "server-port";
+            String serverPort = serverPortText;
 
             if(property.contains(serverPort))
             {
-                int colonIndex = property.indexOf(':');     //Each property contains a colon after which the value shall be inserted.
+                int colonIndex = property.indexOf(separator);     //Each property contains a colon after which the value shall be inserted.
                 if(colonIndex < 0) {                        //If not found the colon - report that you are unable to read property.
                     return false;
                 }
@@ -102,7 +106,7 @@ public class ConfigLoader {
         try {
             BufferedWriter writer = new BufferedWriter(new FileWriter(configFile, true));
 
-            writer.write("server-port:" + defaultPort);
+            writer.write(serverPortText + separator + defaultPort);
 
             writer.close();
         }
@@ -149,6 +153,4 @@ public class ConfigLoader {
 
         return result;
     }
-
-
 }

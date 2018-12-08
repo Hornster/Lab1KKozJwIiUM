@@ -1,7 +1,8 @@
 package pl.polsl.view.userPrompt;
 
 import javafx.util.Pair;
-import pl.polsl.utility.dataCheck.StringToNumber;
+import pl.polsl.clientside.ConfigLoader;
+import pl.polsl.utility.dataCheck.ParseModifyString;
 import pl.polsl.view.display.IDisplayModule;
 import pl.polsl.view.input.IInputModule;
 
@@ -42,7 +43,7 @@ public class ShowMsgToUser{
             display.showData("[2]Exit \n");
 
             data = input.getLine();
-        }while(!StringToNumber.tryStringToInt(data));
+        }while(!ParseModifyString.tryStringToInt(data));
 
         return Integer.parseInt(data);
     }
@@ -108,6 +109,27 @@ public class ShowMsgToUser{
         return new Pair<>(beginning, end);
     }
 
+    /**
+     * Depending on passed loadingResult state, informs the user about how did the properties file reading process go.
+     * @param loadResult Value returned by the configuration loading class.
+     */
+    public void showUserConfigLoadingInfo(ConfigLoader.loadingResult loadResult)
+    {
+        switch (loadResult) {
+            case NOT_PERFORMED:
+                display.showData("Custom config loading not performed. Check if the properties file contains correct data or remove it to recreate it upon next launch.");
+                break;
+            case FILE_NOT_FOUND:
+                display.showData("Properties file not found. Using default configuration. Detailed info about it can be found in recreated properties file.");
+                break;
+            case PARTIAL:
+                display.showData("WARNING - not all values from properties file could be parsed properly. This may result in some properties having default values.");
+                break;
+            case FULL:
+                display.showData("Config loaded successfully.");
+                break;
+        }
+    }
     /**
      * Shows passed string describing given query to the user.
      * @param singleQuery String describing a single query.

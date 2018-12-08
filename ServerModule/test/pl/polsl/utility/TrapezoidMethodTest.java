@@ -3,7 +3,7 @@ package pl.polsl.utility;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import pl.polsl.controller.TrapezoidMethod;
+import pl.polsl.controller.calculation.TrapezoidMethod;
 import pl.polsl.model.IntegralData;
 import pl.polsl.model.exceptions.IntegralCalculationException;
 

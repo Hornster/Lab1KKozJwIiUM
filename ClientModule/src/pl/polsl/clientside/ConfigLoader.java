@@ -15,6 +15,7 @@ import java.util.function.BiConsumer;
  * @version 1.0
  */
 public class ConfigLoader {
+    final char separatorChar = ':';
     /**Possible resulting states of loading properties from the file.
      * NOT_FOUND_OR_INCORRECT - The property was recognized but corrupted.
      * NOT_FOUND - Property was not recognized by given parser.
@@ -30,7 +31,7 @@ public class ConfigLoader {
      */
     public enum loadingResult{NOT_PERFORMED, FILE_NOT_FOUND, PARTIAL, FULL}
     /**Path to configuration file, together with an extension.     */
-    private final String configFile = "serverConfig.properties";
+    private final String configFile = "clientConfig.properties";
     /**String with name of server port property.*/
     private final String propertyServerPort = "server-port";
     /**String with name of server ip property.*/
@@ -56,8 +57,8 @@ public class ConfigLoader {
      * What name implies.
      * @return String containing port for the server. Guaranteed to be parsable to an integer.
      */
-    public String getUsedPort() {
-        return usedPort;
+    public int getUsedPort() {
+        return Integer.parseInt(usedPort);
     }
     /**Returns IP of the server. Default value is localhost.*/
     public String getServerIP() { return usedServerIP;}
@@ -83,7 +84,7 @@ public class ConfigLoader {
      */
     private int readSeparatorIndex(String propertyString)
     {
-        int colonIndex = propertyString.indexOf(':'); //Each property contains a colon after which the value shall be inserted.
+        int colonIndex = propertyString.indexOf(separatorChar); //Each property contains a colon after which the value shall be inserted.
         if(colonIndex >= 0) {                         //If not found the colon - report that you are unable to read property.
             return colonIndex + 1;
         }
@@ -134,6 +135,7 @@ public class ConfigLoader {
                 int colonIndex = readSeparatorIndex(property);     //Each property contains a colon after which the value shall be inserted.
                 if(colonIndex < 0) {                        //If not found the colon - report that you are unable to read property.
                     setPropertyLoadingStatus(propertyServerPort, propertyLoadingState.INCORRECT);
+                    return;
                 }
 
                 String propertyValue = preparePropertyValue(property, colonIndex);
@@ -147,7 +149,6 @@ public class ConfigLoader {
                 {
                     setPropertyLoadingStatus(propertyServerPort, propertyLoadingState.INCORRECT);              //The port was incorrectly written.
                 }
-
             }
         }
     };
@@ -164,6 +165,7 @@ public class ConfigLoader {
                 int colonIndex = readSeparatorIndex(property);     //Each property contains a colon after which the value shall be inserted.
                 if(colonIndex < 0) {                        //If not found the colon - report that you are unable to read property.
                     setPropertyLoadingStatus(propertyServerIP, propertyLoadingState.INCORRECT);
+                    return;
                 }
 
                 usedServerIP = preparePropertyValue(property, colonIndex);
@@ -196,8 +198,8 @@ public class ConfigLoader {
         try {
             BufferedWriter writer = new BufferedWriter(new FileWriter(configFile, true));
 
-            writer.write(propertyServerPort + defaultPort + '\n');
-            writer.write(propertyServerIP + defaultServerIP + '\n');
+            writer.write(propertyServerPort + separatorChar + defaultPort + '\n');
+            writer.write(propertyServerIP + separatorChar + defaultServerIP + '\n');
 
             writer.close();
         }
@@ -256,7 +258,6 @@ public class ConfigLoader {
         BufferedReader reader;
 
         try {
-            propertyLoadingState overallPropState = propertyLoadingState.NOT_FOUND;
             reader = new BufferedReader(new FileReader(configFile));
             String rawProperty = reader.readLine();                         //Attempt to get first line from the properties file.
                                                                             //Try to parse each property (each in separate row) with every parser available.

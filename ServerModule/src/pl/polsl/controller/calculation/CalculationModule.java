@@ -1,4 +1,4 @@
-package pl.polsl.controller;
+package pl.polsl.controller.calculation;
 
 import javafx.util.Pair;
 import pl.polsl.model.CalculationData;
