@@ -254,6 +254,16 @@ public class Core {
 
         sendMessage(commandToReturn);
     }
+
+    /**
+     * Called upon receiving new connection - greets new client.
+     */
+    private void greetNewClient()
+    {
+        ServerCommand greetingCommand = new ServerCommand(CommandParser.commandType.NEW_CONNECTION);
+        greetingCommand.addValue(PredefinedCommunicates.getGreetingMessage());
+        sendMessage(greetingCommand);
+    }
     /**Main loop of the program*/
     private void mainLoop()
     {
@@ -277,6 +287,7 @@ public class Core {
 
                 case AWAIT_CONNECTION:
                     awaitNewConnection();
+                    greetNewClient();
                     changeState(programStates.RETRIEVE_COMMAND);
                     break;
 

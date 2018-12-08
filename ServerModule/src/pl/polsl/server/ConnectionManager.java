@@ -4,6 +4,7 @@ import java.io.*;
 import java.net.*;
 
 public class ConnectionManager implements Closeable {
+    private final String endSequence = "#END$";
     private int serverPort;
     private ServerSocket serverSocket;
     private Socket clientSocket;
@@ -51,7 +52,7 @@ public class ConnectionManager implements Closeable {
      */
     public void SendAnswer(String answer)
     {
-        output.print(answer);
+        output.println(answer + endSequence);
         output.flush();
     }
 
@@ -74,7 +75,7 @@ public class ConnectionManager implements Closeable {
         output = new PrintWriter(
                     new BufferedWriter(
                         new OutputStreamWriter(
-                                socket.getOutputStream())), true);
+                                socket.getOutputStream())), false);
         input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
     }
 

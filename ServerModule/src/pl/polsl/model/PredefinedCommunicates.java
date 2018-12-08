@@ -75,5 +75,13 @@ public class PredefinedCommunicates {
         return "Available commands: \n";
     }
 
+    /**
+     * Simple new client greeting message.
+     * @return Greeting message.
+     */
+    public static String getGreetingMessage()
+    {
+        return "What is it, mortal?";
+    }
 
 }

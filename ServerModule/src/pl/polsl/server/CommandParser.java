@@ -22,7 +22,7 @@ public class CommandParser {
      * Stores possible states of the commands. INCORRECT means the command is corrupted - needs to be returned to user.
      * Other indicate what type of command is this.
      */
-    public enum commandType{DISCONNECT, HELP, SET_INTEGRAL, SET_METHOD, CALCULATE, GET_HISTORY, INCORRECT}
+    public enum commandType{DISCONNECT, HELP, SET_INTEGRAL, SET_METHOD, CALCULATE, GET_HISTORY, INCORRECT, NEW_CONNECTION}
     private Map<commandType, Boolean> isCommandServerSideOnly = new HashMap<commandType, Boolean>();
     /**
      * Offers explanation of every command and method returning ServerCommand of INCORRECT type with customizable description.

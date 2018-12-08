@@ -115,7 +115,6 @@ public class Core {
                 connectionManager.sendMessage(command);
                 command = connectionManager.retreiveMessage();
                 display.showData(command);                                          //At the end, show the message to the user.
-
             } while (!commandWrapper.ChkIfAnswerCorrect(command));          //Keep maltreat the user 'till they provide correct data.
         }
         catch(IOException ex)
@@ -168,6 +167,21 @@ public class Core {
         }
     }
 
+    private void disconnectFromServer()
+    {
+        try {
+            commandWrapper.newArgList();
+            String command = commandWrapper.createCommand(CommandWrapper.commandType.DISCONNECT);
+
+            connectionManager.sendMessage(command);
+            command = connectionManager.retreiveMessage();
+            display.showData(command);
+        }
+        catch(IOException ex)
+        {
+            System.out.println("Could not retrieve good bye from the server. Welp." + ex.getMessage());
+        }
+    }
 
     /**
      * Manages selection of one of the options in the menu.
@@ -181,6 +195,7 @@ public class Core {
     private void mainLoop()
     {
         showMsgToUser.printWelcome();
+        receiveGreeting();
         while(state != programStates.EXIT)
         {
             switch(state) {
@@ -205,8 +220,23 @@ public class Core {
                     break;
             }
         }
+        disconnectFromServer();                         //At the end, disconnect from server to not jump-scare it with sudden exceptions.
     }
 
+    /**
+     * Called at the beginning, right after establishing connection to the server. Receives greeting/introduction message.
+     */
+    private void receiveGreeting()
+    {
+        try {
+            String greeting = connectionManager.retreiveMessage();
+            display.showData(greeting);
+        }
+        catch(IOException ex)
+        {
+            System.out.println("Could not retrieve greeting message! " + ex.getMessage());
+        }
+    }
     /**
      * Manages configuration loading from a properties file.
      */

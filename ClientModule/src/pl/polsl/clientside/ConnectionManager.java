@@ -2,8 +2,10 @@ package pl.polsl.clientside;
 
 import java.io.*;
 import java.net.Socket;
+import java.util.stream.Stream;
 
 public class ConnectionManager implements Closeable, IConnectionManager {
+    private final String endSequence = "#END$";
     private int serverPort;
     private Socket clientSocket;
 
@@ -21,7 +23,7 @@ public class ConnectionManager implements Closeable, IConnectionManager {
         output = new PrintWriter(
                 new BufferedWriter(
                         new OutputStreamWriter(
-                                socket.getOutputStream())), true);
+                                socket.getOutputStream())), false);
         input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
     }
 
@@ -43,13 +45,28 @@ public class ConnectionManager implements Closeable, IConnectionManager {
 
     @Override
     public void sendMessage(String message) {
+        message = message + '\n';
         output.print(message);
         output.flush();
     }
 
     @Override
     public String retreiveMessage() throws IOException {
-        return input.readLine();
+        StringBuilder readAnswer = new StringBuilder();
+        String readLine;
+
+        while(!((readLine = input.readLine()).endsWith(endSequence)))
+        {
+            readAnswer.append(readLine);
+            readAnswer.append('\n');
+        }
+                                                                                       //Still, we need to add any remaining messages.
+        if(readLine.length() > endSequence.length()) {                                 //So if there's something more than endSequence...
+            readLine = readLine.substring(0, readLine.length() - endSequence.length());//...then add it, excluding the end sequence itself.
+            readAnswer.append(readLine);
+        }
+
+        return readAnswer.toString();
     }
 
     @Override
