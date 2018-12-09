@@ -167,6 +167,9 @@ public class Core {
         }
     }
 
+    /**
+     * Sends disconnect command to the server,allowing for safe disconnection.
+     */
     private void disconnectFromServer()
     {
         try {

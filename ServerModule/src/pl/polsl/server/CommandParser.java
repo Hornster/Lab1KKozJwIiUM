@@ -44,6 +44,7 @@ public class CommandParser {
         }
 
         isCommandServerSideOnly.replace(commandType.INCORRECT, true);   //...and make corrections where necessary.
+        isCommandServerSideOnly.replace(commandType.NEW_CONNECTION, true);
     }
     public CommandParser()
     {
